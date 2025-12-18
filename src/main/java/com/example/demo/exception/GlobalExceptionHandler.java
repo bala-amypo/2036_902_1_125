@@ -1,1 +1,3 @@
-public class GlobalException
+public class GlobalExceptionHandler{
+    
+}
