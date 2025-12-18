@@ -1,3 +1,3 @@
-public class ReccipeIngredientController{
+public class RecipeIngredientController{
     
 }
