@@ -1,1 +1,3 @@
-public class ProfitCalculationServiceImpl
+public class ProfitCalculationServiceImpl{
+    
+}
