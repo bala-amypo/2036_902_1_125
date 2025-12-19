@@ -1,9 +1,9 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.MenuItem;
+import com.example.demo.entity.ProfitCalculationRecord;
 import com.example.demo.entity.Ingredient;
 import com.example.demo.entity.RecipeIngredient;
-import com.example.demo.entity.ProfitCalculationRecord;
 import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.repository.RecipeIngredientRepository;
 import com.example.demo.repository.ProfitCalculationRecordRepository;
@@ -40,9 +40,10 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
 
             Ingredient ing = ri.getIngredient();
 
-            BigDecimal costPerKg = ing.getCostPerUnit(); // per KG
+            BigDecimal costPerKg = ing.getCostPerUnit();   // stored per KG
             BigDecimal qtyGram   = BigDecimal.valueOf(ri.getQuantityRequired());
 
+            // convert grams → kg
             BigDecimal qtyKg = qtyGram.divide(
                     BigDecimal.valueOf(1000),
                     4,
@@ -64,5 +65,21 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
         record.setCalculatedAt(new Timestamp(System.currentTimeMillis()));
 
         return recordRepository.save(record);
+    }
+
+    @Override
+    public ProfitCalculationRecord getCalculationById(Long id) {
+        return recordRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Record not found"));
+    }
+
+    @Override
+    public List<ProfitCalculationRecord> getCalculationsForMenuItem(Long menuItemId) {
+        return recordRepository.findByMenuItemId(menuItemId);
+    }
+
+    @Override
+    public List<ProfitCalculationRecord> getAllCalculations() {
+        return recordRepository.findAll();
     }
 }
