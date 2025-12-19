@@ -24,7 +24,7 @@ import java.util.List;
         scheme = "bearer",
         bearerFormat = "JWT"
 )
-public class SwaggerConfig {
+public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
