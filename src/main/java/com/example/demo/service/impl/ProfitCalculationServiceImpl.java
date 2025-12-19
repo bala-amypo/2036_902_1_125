@@ -55,8 +55,9 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
             totalCost = totalCost.add(ingredientCost);
         }
 
-        BigDecimal sellingPrice = BigDecimal.valueOf(menuItem.getSellingPrice());
-        BigDecimal profit       = sellingPrice.subtract(totalCost);
+        BigDecimal sellingPrice = menuItem.getSellingPrice();
+BigDecimal profit       = sellingPrice.subtract(totalCost);
+
 
         ProfitCalculationRecord record = new ProfitCalculationRecord();
         record.setMenuItem(menuItem);
