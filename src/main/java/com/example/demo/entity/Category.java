@@ -24,7 +24,6 @@ public class Category {
 
     private Boolean active = true;
 
-    // Prevent infinite JSON recursion
     @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private Set<MenuItem> menuItems = new HashSet<>();

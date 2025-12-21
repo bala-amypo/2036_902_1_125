@@ -16,25 +16,21 @@ public class ProfitCalculationController {
         this.service = service;
     }
 
-    // POST /calculate/{menuItemId}
     @PostMapping("/calculate/{menuItemId}")
     public ProfitCalculationRecord calculate(@PathVariable Long menuItemId){
         return service.calculateProfit(menuItemId);
     }
 
-    // GET /{id}
     @GetMapping("/{id}")
     public ProfitCalculationRecord get(@PathVariable Long id){
         return service.getById(id);
     }
 
-    // GET /menu-item/{menuItemId}
     @GetMapping("/menu-item/{menuItemId}")
     public List<ProfitCalculationRecord> listByMenu(@PathVariable Long menuItemId){
         return service.getHistoryByMenuItem(menuItemId);
     }
 
-    // GET /
     @GetMapping("/")
     public List<ProfitCalculationRecord> all(){
         return service.getAll();

@@ -14,14 +14,11 @@ public class AuthController {
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
-
-    // POST /auth/register
     @PostMapping("/register")
     public User register(@RequestBody User user) {
         return authService.register(user);
     }
 
-    // POST /auth/login
     @PostMapping("/login")
     public User login(
             @RequestParam String email,
