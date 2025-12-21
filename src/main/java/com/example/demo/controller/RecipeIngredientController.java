@@ -45,3 +45,4 @@ public class RecipeIngredientController {
         return service.getTotalQuantityOfIngredient(ingredientId);
     }
 }
+
