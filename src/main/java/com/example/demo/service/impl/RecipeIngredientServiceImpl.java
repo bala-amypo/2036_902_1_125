@@ -15,64 +15,63 @@ import java.util.List;
 @Service
 public class RecipeIngredientServiceImpl implements RecipeIngredientService {
 
-    private final RecipeIngredientRepository recipeRepo;
+    private final RecipeIngredientRepository repo;
     private final IngredientRepository ingredientRepo;
     private final MenuItemRepository menuRepo;
 
     public RecipeIngredientServiceImpl(
-            RecipeIngredientRepository recipeRepo,
+            RecipeIngredientRepository repo,
             IngredientRepository ingredientRepo,
             MenuItemRepository menuRepo
     ){
-        this.recipeRepo = recipeRepo;
+        this.repo = repo;
         this.ingredientRepo = ingredientRepo;
         this.menuRepo = menuRepo;
     }
 
     @Override
-    public RecipeIngredient addIngredientToRecipe(Long menuItemId, Long ingredientId, Double quantity){
+    public RecipeIngredient addIngredientToRecipe(Long menuItemId, Long ingredientId, Double qty){
 
         Ingredient ing = ingredientRepo.findById(ingredientId)
-                .orElseThrow(() -> new ResourceNotFoundException("not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
 
         MenuItem item = menuRepo.findById(menuItemId)
-                .orElseThrow(() -> new ResourceNotFoundException("not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
 
         RecipeIngredient r = new RecipeIngredient();
         r.setIngredient(ing);
         r.setMenuItem(item);
-        r.setQuantityRequired(quantity);
+        r.setQuantityRequired(qty);
 
-        return recipeRepo.save(r);
+        return repo.save(r);
     }
 
     @Override
-    public RecipeIngredient updateRecipeIngredient(Long id, Double quantity){
+    public RecipeIngredient updateRecipeIngredient(Long id, Double qty){
 
-        RecipeIngredient r = recipeRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("not found"));
+        RecipeIngredient r = repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Record not found"));
 
-        r.setQuantityRequired(quantity);
+        r.setQuantityRequired(qty);
 
-        return recipeRepo.save(r);
+        return repo.save(r);
     }
 
     @Override
     public List<RecipeIngredient> getIngredientsByMenuItem(Long menuItemId) {
-        return recipeRepo.findAll().stream()
+        return repo.findAll().stream()
                 .filter(r -> r.getMenuItem().getId().equals(menuItemId))
                 .toList();
     }
 
     @Override
     public void removeIngredientFromRecipe(Long id) {
-        recipeRepo.deleteById(id);
+        repo.deleteById(id);
     }
 
     @Override
     public Double getTotalQuantityOfIngredient(Long ingredientId) {
-
-        return recipeRepo.findAll().stream()
+        return repo.findAll().stream()
                 .filter(r -> r.getIngredient().getId().equals(ingredientId))
                 .mapToDouble(RecipeIngredient::getQuantityRequired)
                 .sum();
