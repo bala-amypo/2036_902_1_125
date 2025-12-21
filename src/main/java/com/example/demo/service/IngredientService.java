@@ -5,13 +5,13 @@ import java.util.List;
 
 public interface IngredientService {
 
-    Ingredient createIngredient(Ingredient ingredient);
+    Ingredient create(Ingredient ingredient);
 
-    Ingredient updateIngredient(Long id, Ingredient ingredient);
+    Ingredient update(Long id, Ingredient ingredient);
 
-    Ingredient getIngredientById(Long id);
+    Ingredient getById(Long id);
 
-    List<Ingredient> getAllIngredients();
+    List<Ingredient> getAll();
 
-    void deactivateIngredient(Long id);
+    void deactivate(Long id);
 }

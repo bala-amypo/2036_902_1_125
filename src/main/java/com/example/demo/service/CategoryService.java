@@ -5,13 +5,13 @@ import java.util.List;
 
 public interface CategoryService {
 
-    Category createCategory(Category category);
+    Category create(Category category);
 
-    Category updateCategory(Long id, Category category);
+    Category update(Long id, Category category);
 
-    Category getCategoryById(Long id);
+    Category getById(Long id);
 
-    List<Category> getAllCategories();
+    List<Category> getAll();
 
-    void deactivateCategory(Long id);
+    void deactivate(Long id);
 }

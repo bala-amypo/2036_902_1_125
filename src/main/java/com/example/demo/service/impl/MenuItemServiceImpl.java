@@ -1,75 +1,58 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.MenuItem;
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.service.MenuItemService;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 public class MenuItemServiceImpl implements MenuItemService {
 
-    private final MenuItemRepository menuRepository;
+    private final MenuItemRepository repo;
 
-    public MenuItemServiceImpl(MenuItemRepository menuRepository){
-        this.menuRepository = menuRepository;
+    public MenuItemServiceImpl(MenuItemRepository repo){
+        this.repo = repo;
     }
 
     @Override
-    public MenuItem createMenuItem(MenuItem menuItem) {
-
-        if (menuItem.getSellingPrice() == null
-                || menuItem.getSellingPrice().compareTo(BigDecimal.ZERO) <= 0){
-            throw new BadRequestException("Cost per unit");
-        }
-
-        menuItem.setActive(true);
-
-        return menuRepository.save(menuItem);
+    public MenuItem create(MenuItem item){
+        item.setActive(true);
+        return repo.save(item);
     }
 
     @Override
-    public MenuItem updateMenuItem(Long id, MenuItem updated) {
-
-        MenuItem item = menuRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("not found"));
-
-        if (updated.getSellingPrice() == null
-                || updated.getSellingPrice().compareTo(BigDecimal.ZERO) <= 0){
-            throw new BadRequestException("Cost per unit");
-        }
+    public MenuItem update(Long id, MenuItem updated){
+        MenuItem item = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Menu item not found"));
 
         item.setName(updated.getName());
-        item.setSellingPrice(updated.getSellingPrice());
         item.setDescription(updated.getDescription());
+        item.setSellingPrice(updated.getSellingPrice());
         item.setCategories(updated.getCategories());
 
-        return menuRepository.save(item);
+        return repo.save(item);
     }
 
     @Override
-    public MenuItem getMenuItemById(Long id) {
-        return menuRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("not found"));
+    public MenuItem getById(Long id){
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Menu item not found"));
     }
 
     @Override
-    public List<MenuItem> getAllMenuItems() {
-        return menuRepository.findAll();
+    public List<MenuItem> getAll(){
+        return repo.findAll();
     }
 
     @Override
-    public void deactivateMenuItem(Long id) {
-
-        MenuItem item = menuRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("not found"));
+    public void deactivate(Long id){
+        MenuItem item = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Menu item not found"));
 
         item.setActive(false);
 
-        menuRepository.save(item);
+        repo.save(item);
     }
 }

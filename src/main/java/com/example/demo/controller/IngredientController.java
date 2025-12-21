@@ -18,26 +18,26 @@ public class IngredientController {
 
     @PostMapping("/")
     public Ingredient create(@RequestBody Ingredient ingredient){
-        return service.createIngredient(ingredient);
+        return service.create(ingredient);
     }
 
     @PutMapping("/{id}")
     public Ingredient update(@PathVariable Long id, @RequestBody Ingredient ingredient){
-        return service.updateIngredient(id, ingredient);
+        return service.update(id, ingredient);
     }
 
     @GetMapping("/{id}")
     public Ingredient get(@PathVariable Long id){
-        return service.getIngredientById(id);
+        return service.getById(id);
     }
 
     @GetMapping("/")
     public List<Ingredient> list(){
-        return service.getAllIngredients();
+        return service.getAll();
     }
 
     @PutMapping("/{id}/deactivate")
     public void deactivate(@PathVariable Long id){
-        service.deactivateIngredient(id);
+        service.deactivate(id);
     }
 }

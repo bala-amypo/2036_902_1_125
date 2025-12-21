@@ -18,26 +18,26 @@ public class MenuItemController {
 
     @PostMapping("/")
     public MenuItem create(@RequestBody MenuItem item){
-        return service.createMenuItem(item);
+        return service.create(item);
     }
 
     @PutMapping("/{id}")
     public MenuItem update(@PathVariable Long id, @RequestBody MenuItem item){
-        return service.updateMenuItem(id, item);
+        return service.update(id, item);
     }
 
     @GetMapping("/{id}")
     public MenuItem get(@PathVariable Long id){
-        return service.getMenuItemById(id);
+        return service.getById(id);
     }
 
     @GetMapping("/")
     public List<MenuItem> list(){
-        return service.getAllMenuItems();
+        return service.getAll();
     }
 
     @PutMapping("/{id}/deactivate")
     public void deactivate(@PathVariable Long id){
-        service.deactivateMenuItem(id);
+        service.deactivate(id);
     }
 }
