@@ -2,9 +2,8 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,11 +12,10 @@ import java.util.Set;
 @NoArgsConstructor @AllArgsConstructor
 public class MenuItem {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String name;
 
     private String description;
@@ -26,25 +24,25 @@ public class MenuItem {
 
     private Boolean active = true;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     @ManyToMany
     @JoinTable(
-            name = "menu_category",
-            joinColumns = @JoinColumn(name = "menu_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
+            name = "menuitem_category",
+            joinColumns = @JoinColumn(name="menuitem_id"),
+            inverseJoinColumns = @JoinColumn(name="category_id")
     )
     private Set<Category> categories = new HashSet<>();
 
     @PrePersist
     public void create(){
-        createdAt = LocalDateTime.now();
+        createdAt = new Timestamp(System.currentTimeMillis());
         updatedAt = createdAt;
     }
 
     @PreUpdate
     public void update(){
-        updatedAt = LocalDateTime.now();
+        updatedAt = new Timestamp(System.currentTimeMillis());
     }
 }
