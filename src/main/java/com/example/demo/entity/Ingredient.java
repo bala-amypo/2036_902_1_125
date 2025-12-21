@@ -2,18 +2,20 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class Ingredient {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     private String unit;
@@ -22,17 +24,17 @@ public class Ingredient {
 
     private Boolean active = true;
 
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @PrePersist
-    public void onCreate(){
-        createdAt = new Timestamp(System.currentTimeMillis());
+    public void create(){
+        createdAt = LocalDateTime.now();
         updatedAt = createdAt;
     }
 
     @PreUpdate
-    public void onUpdate(){
-        updatedAt = new Timestamp(System.currentTimeMillis());
+    public void update(){
+        updatedAt = LocalDateTime.now();
     }
 }
