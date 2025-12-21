@@ -6,7 +6,5 @@ import java.util.List;
 
 public interface ProfitCalculationRecordRepository extends JpaRepository<ProfitCalculationRecord, Long> {
 
-    List<ProfitCalculationRecord> findByMenuItemId(Long id);
-
+    List<ProfitCalculationRecord> findByMenuItemId(Long menuItemId);
 }
-

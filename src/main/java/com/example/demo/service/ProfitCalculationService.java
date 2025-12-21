@@ -1,4 +1,3 @@
-
 package com.example.demo.service;
 
 import com.example.demo.entity.ProfitCalculationRecord;
@@ -8,9 +7,9 @@ public interface ProfitCalculationService {
 
     ProfitCalculationRecord calculateProfit(Long menuItemId);
 
-    ProfitCalculationRecord getCalculationById(Long id);
+    ProfitCalculationRecord getById(Long id);
 
-    List<ProfitCalculationRecord> getCalculationsForMenuItem(Long menuItemId);
+    List<ProfitCalculationRecord> getHistoryByMenuItem(Long menuItemId);
 
-    List<ProfitCalculationRecord> getAllCalculations();
+    List<ProfitCalculationRecord> getAll();
 }
