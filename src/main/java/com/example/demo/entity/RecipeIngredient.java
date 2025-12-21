@@ -8,8 +8,7 @@ import lombok.*;
 @NoArgsConstructor @AllArgsConstructor
 public class RecipeIngredient {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
