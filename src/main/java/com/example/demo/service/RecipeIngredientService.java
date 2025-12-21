@@ -1,17 +1,15 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.RecipeIngredient;
+import com.example.demo.entity.ProfitCalculationRecord;
 import java.util.List;
 
-public interface RecipeIngredientService {
+public interface ProfitCalculationService {
 
-    RecipeIngredient addIngredientToRecipe(Long menuItemId, Long ingredientId, Double quantity);
+    ProfitCalculationRecord calculateProfit(Long menuItemId);
 
-    RecipeIngredient updateRecipeIngredient(Long id, Double quantity);
+    ProfitCalculationRecord getCalculationById(Long id);
 
-    List<RecipeIngredient> getIngredientsByMenuItem(Long menuItemId);
+    List<ProfitCalculationRecord> getCalculationsForMenuItem(Long menuItemId);
 
-    void removeIngredientFromRecipe(Long id);
-
-    Double getTotalQuantityOfIngredient(Long ingredientId);
+    List<ProfitCalculationRecord> getAllCalculations();
 }
