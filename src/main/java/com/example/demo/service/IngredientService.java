@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import org.springframework.stereotype.Service;
+
 import com.example.demo.entity.Ingredient;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
