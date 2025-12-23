@@ -22,6 +22,11 @@ public class MenuItem {
     private Timestamp updatedAt;
 
     @ManyToMany
+    @JoinTable(
+        name = "menu_item_categories",
+        joinColumns = @JoinColumn(name = "menu_item_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
     private Set<Category> categories;
 
     @PrePersist
