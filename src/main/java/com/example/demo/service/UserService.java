@@ -33,7 +33,7 @@ public class UserService {
         user.setFullName(req.getFullName());
         user.setEmail(req.getEmail());
         user.setPassword(passwordEncoder.encode(req.getPassword()));
-        user.setRole(req.getRole() != null ? req.getRole() : "MANAGER");
+        user.setRole(req.getRole() != null ? req.getRole() : "ADMIN");
 
         userRepository.save(user);
         return "User registered successfully";
@@ -48,7 +48,6 @@ public class UserService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        // ✅ JWT TOKEN
         return jwtTokenProvider.createToken(
                 user.getEmail(),
                 user.getRole()
