@@ -2,37 +2,39 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.ProfitCalculationRecord;
 import com.example.demo.service.ProfitCalculationService;
-
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/profit")
+@Tag(name = "Profit Calculation")
 public class ProfitCalculationController {
 
     private final ProfitCalculationService service;
 
-    public ProfitCalculationController(ProfitCalculationService service){
+    public ProfitCalculationController(ProfitCalculationService service) {
         this.service = service;
     }
 
     @PostMapping("/calculate/{menuItemId}")
-    public ProfitCalculationRecord calculate(@PathVariable Long menuItemId){
+    public ProfitCalculationRecord calculate(@PathVariable Long menuItemId) {
         return service.calculateProfit(menuItemId);
     }
 
     @GetMapping("/{id}")
-    public ProfitCalculationRecord get(@PathVariable Long id){
-        return service.getById(id);
+    public ProfitCalculationRecord get(@PathVariable Long id) {
+        return service.getCalculationById(id);
     }
 
     @GetMapping("/menu-item/{menuItemId}")
-    public List<ProfitCalculationRecord> listByMenu(@PathVariable Long menuItemId){
-        return service.getHistoryByMenuItem(menuItemId);
+    public List<ProfitCalculationRecord> getByMenuItem(@PathVariable Long menuItemId) {
+        return service.getCalculationsForMenuItem(menuItemId);
     }
 
     @GetMapping("/")
-    public List<ProfitCalculationRecord> all(){
-        return service.getAll();
+    public List<ProfitCalculationRecord> getAll() {
+        return service.getAllCalculations();
     }
 }
