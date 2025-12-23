@@ -22,13 +22,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequest req) {
+public String login(@RequestBody AuthRequest req) {
+    return userService.login(req); // ONLY TOKEN
+}
 
-        String token = userService.login(req);
-
-        // ✅ RETURN TOKEN AS JSON (BEST PRACTICE)
-        return ResponseEntity.ok(
-                java.util.Map.of("token", token)
-        );
-    }
 }
