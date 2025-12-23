@@ -5,7 +5,9 @@ import com.example.demo.entity.User;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service   // ✅ ADD THIS
 public class UserService {
 
     private final UserRepository userRepository;
@@ -18,7 +20,6 @@ public class UserService {
     }
 
     public String register(RegisterRequest req) {
-
         if (userRepository.existsByEmail(req.getEmail())) {
             throw new BadRequestException("Email already in use");
         }
