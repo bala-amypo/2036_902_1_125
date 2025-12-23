@@ -23,7 +23,7 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("Menu API")
+                        .title("Menu Profit API")
                         .version("1.0")
                         .description("Menu Management REST APIs")
                 )
