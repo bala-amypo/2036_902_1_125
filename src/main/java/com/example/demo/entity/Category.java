@@ -5,29 +5,21 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(
-    name = "category",
-    uniqueConstraints = @UniqueConstraint(columnNames = "name")
-)
+@Table(name = "category")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String name;
-
     private String description;
-
     private Boolean active = true;
 
-    // 🔴 IMPORTANT: Prevent infinite JSON loop
     @ManyToMany(mappedBy = "categories")
-    @JsonIgnore
-    private Set<MenuItem> menuItems;
+    private Set<MenuItem> menuItems = new HashSet<>();
 
-    // ===== GETTERS & SETTERS =====
+    // getters & setters
 
     public Long getId() {
         return id;

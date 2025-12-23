@@ -6,10 +6,7 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
-@Table(
-    name = "menu_item",
-    uniqueConstraints = @UniqueConstraint(columnNames = "name")
-)
+@Table(name = "menu_item")
 public class MenuItem {
 
     @Id
@@ -21,26 +18,17 @@ public class MenuItem {
     private BigDecimal sellingPrice;
     private Boolean active = true;
 
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-
     @ManyToMany
     @JoinTable(
         name = "menu_item_categories",
         joinColumns = @JoinColumn(name = "menu_item_id"),
         inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
-    @PrePersist
-    void onCreate() {
-        createdAt = new Timestamp(System.currentTimeMillis());
-    }
+    // getters & setters
+}
 
-    @PreUpdate
-    void onUpdate() {
-        updatedAt = new Timestamp(System.currentTimeMillis());
-    }
 
     // Getters & Setters
     public Long getId() { return id; }
