@@ -7,7 +7,7 @@ import com.example.demo.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service   // ✅ ADD THIS
+@Service 
 public class UserService {
 
     private final UserRepository userRepository;
