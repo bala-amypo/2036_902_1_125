@@ -22,6 +22,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    // 🔥 VERY IMPORTANT (PREVENT LOGIN BLOCK)
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.startsWith("/auth/")
+                || path.startsWith("/swagger-ui/")
+                || path.startsWith("/v3/api-docs/");
+    }
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -39,11 +48,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 String email = jwtTokenProvider.getEmail(token);
                 String role = jwtTokenProvider.getRole(token);
-
-                // 🔴 DEBUG LOGS (VERY IMPORTANT)
-                System.out.println("JWT FILTER HIT");
-                System.out.println("JWT EMAIL = " + email);
-                System.out.println("JWT ROLE  = " + role);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
