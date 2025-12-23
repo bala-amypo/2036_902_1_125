@@ -23,6 +23,7 @@ public class UserService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    // ================= REGISTER =================
     public String register(RegisterRequest req) {
 
         if (userRepository.existsByEmail(req.getEmail())) {
@@ -32,22 +33,36 @@ public class UserService {
         User user = new User();
         user.setFullName(req.getFullName());
         user.setEmail(req.getEmail());
+
+        // ✅ BCrypt password
         user.setPassword(passwordEncoder.encode(req.getPassword()));
+
+        // ✅ Default role ADMIN
         user.setRole(req.getRole() != null ? req.getRole() : "ADMIN");
 
         userRepository.save(user);
+
         return "User registered successfully";
     }
 
+    // ================= LOGIN (FIXED) =================
     public String login(AuthRequest req) {
 
-        User user = userRepository.findByEmail(req.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+        // 🔍 DEBUG (IMPORTANT)
+        System.out.println("LOGIN EMAIL = " + req.getEmail());
 
+        User user = userRepository.findByEmail(req.getEmail())
+                .orElseThrow(() -> new RuntimeException("USER_NOT_FOUND"));
+
+        System.out.println("DB PASSWORD = " + user.getPassword());
+        System.out.println("DB ROLE = " + user.getRole());
+
+        // ❌ Password mismatch
         if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new RuntimeException("PASSWORD_MISMATCH");
         }
 
+        // ✅ RETURN JWT TOKEN
         return jwtTokenProvider.createToken(
                 user.getEmail(),
                 user.getRole()
