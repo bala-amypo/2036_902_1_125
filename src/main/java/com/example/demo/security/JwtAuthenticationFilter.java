@@ -22,14 +22,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    // 🔥 VERY IMPORTANT (PREVENT LOGIN BLOCK)
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getRequestURI();
-        return path.startsWith("/auth/")
-                || path.startsWith("/swagger-ui/")
-                || path.startsWith("/v3/api-docs/");
-    }
+   @Override
+protected boolean shouldNotFilter(HttpServletRequest request) {
+    String path = request.getServletPath();
+
+    return path.equals("/auth/login")
+        || path.equals("/auth/register")
+        || path.startsWith("/swagger-ui")
+        || path.startsWith("/v3/api-docs");
+}
+
 
     @Override
     protected void doFilterInternal(
