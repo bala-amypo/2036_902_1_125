@@ -1,33 +1,48 @@
-package com.example.demo.entity;
+package com.example.demo.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import java.util.Set;
+import com.example.demo.entity.Category;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.CategoryRepository;
+import org.springframework.stereotype.Service;
 
-@Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
-public class Category {
+import java.util.List;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Service
+public class CategoryService {
 
-    private String name;
-    private String description;
-    private Boolean active = true;
+    private final CategoryRepository repository;
 
-    @ManyToMany(mappedBy = "categories")
-    @JsonIgnore   // 🔴 VERY IMPORTANT
-    private Set<MenuItem> menuItems;
+    public CategoryService(CategoryRepository repository) {
+        this.repository = repository;
+    }
 
-    public Long getId() { return id; }
+    public Category create(Category category) {
+        return repository.save(category);
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public Category update(Long id, Category updated) {
+        Category existing = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+        existing.setName(updated.getName());
+        existing.setDescription(updated.getDescription());
+        existing.setActive(updated.getActive());
 
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+        return repository.save(existing);
+    }
+
+    public Category getById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    }
+
+    public List<Category> getAll() {
+        return repository.findAll();
+    }
+
+    public void deactivate(Long id) {
+        Category category = getById(id);
+        category.setActive(false);
+        repository.save(category);
+    }
 }
