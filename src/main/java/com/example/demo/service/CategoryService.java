@@ -1,47 +1,33 @@
-package com.example.demo.service;
+package com.example.demo.entity;
 
-import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import java.util.Set;
 
-import com.example.demo.entity.Category;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.CategoryRepository;
+@Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+public class Category {
 
-import java.util.List;
-@Service
-public class CategoryService {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final CategoryRepository categoryRepository;
+    private String name;
+    private String description;
+    private Boolean active = true;
 
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    @ManyToMany(mappedBy = "categories")
+    @JsonIgnore   // 🔴 VERY IMPORTANT
+    private Set<MenuItem> menuItems;
 
-    public Category createCategory(Category category) {
-        return categoryRepository.save(category);
-    }
+    public Long getId() { return id; }
 
-    public Category updateCategory(Long id, Category category) {
-        Category existing = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-        existing.setName(category.getName());
-        existing.setDescription(category.getDescription());
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-        return categoryRepository.save(existing);
-    }
-
-    public Category getCategoryById(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-    }
-
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
-    }
-
-    public void deactivateCategory(Long id) {
-        Category category = getCategoryById(id);
-        category.setActive(false);
-        categoryRepository.save(category);
-    }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }
