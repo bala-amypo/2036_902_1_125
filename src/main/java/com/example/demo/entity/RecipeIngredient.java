@@ -17,5 +17,15 @@ public class RecipeIngredient {
 
     private Double quantityRequired;
 
-    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public MenuItem getMenuItem() { return menuItem; }
+    public void setMenuItem(MenuItem menuItem) { this.menuItem = menuItem; }
+
+    public Ingredient getIngredient() { return ingredient; }
+    public void setIngredient(Ingredient ingredient) { this.ingredient = ingredient; }
+
+    public Double getQuantityRequired() { return quantityRequired; }
+    public void setQuantityRequired(Double quantityRequired) { this.quantityRequired = quantityRequired; }
 }

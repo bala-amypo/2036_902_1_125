@@ -22,11 +22,6 @@ public class MenuItem {
     private Timestamp updatedAt;
 
     @ManyToMany
-    @JoinTable(
-        name = "menu_item_categories",
-        joinColumns = @JoinColumn(name = "menu_item_id"),
-        inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
     private Set<Category> categories;
 
     @PrePersist
@@ -39,5 +34,21 @@ public class MenuItem {
         updatedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public BigDecimal getSellingPrice() { return sellingPrice; }
+    public void setSellingPrice(BigDecimal sellingPrice) { this.sellingPrice = sellingPrice; }
+
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
+
+    public Set<Category> getCategories() { return categories; }
+    public void setCategories(Set<Category> categories) { this.categories = categories; }
 }
