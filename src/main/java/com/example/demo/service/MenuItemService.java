@@ -8,7 +8,7 @@ import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.repository.RecipeIngredientRepository;
 
 import java.util.List;
-
+@Service
 public class MenuItemService {
 
     private final MenuItemRepository menuItemRepository;

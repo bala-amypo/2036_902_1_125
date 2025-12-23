@@ -6,7 +6,7 @@ import com.example.demo.repository.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-
+@Service
 public class ProfitCalculationService {
 
     private final MenuItemRepository menuItemRepo;

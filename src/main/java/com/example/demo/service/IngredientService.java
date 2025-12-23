@@ -6,7 +6,7 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.IngredientRepository;
 
 import java.util.List;
-
+@Service
 public class IngredientService {
 
     private final IngredientRepository ingredientRepository;

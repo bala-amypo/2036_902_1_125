@@ -5,7 +5,7 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.CategoryRepository;
 
 import java.util.List;
-
+@Service
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
