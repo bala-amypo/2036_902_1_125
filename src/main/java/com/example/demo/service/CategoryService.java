@@ -1,17 +1,45 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Category;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.CategoryRepository;
+
 import java.util.List;
 
-public interface CategoryService {
+public class CategoryService {
 
-    Category create(Category category);
+    private final CategoryRepository categoryRepository;
 
-    Category update(Long id, Category category);
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
-    Category getById(Long id);
+    public Category createCategory(Category category) {
+        return categoryRepository.save(category);
+    }
 
-    List<Category> getAll();
+    public Category updateCategory(Long id, Category category) {
+        Category existing = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
-    void deactivate(Long id);
+        existing.setName(category.getName());
+        existing.setDescription(category.getDescription());
+
+        return categoryRepository.save(existing);
+    }
+
+    public Category getCategoryById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    }
+
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    public void deactivateCategory(Long id) {
+        Category category = getCategoryById(id);
+        category.setActive(false);
+        categoryRepository.save(category);
+    }
 }

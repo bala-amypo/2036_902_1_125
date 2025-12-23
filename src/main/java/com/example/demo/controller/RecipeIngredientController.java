@@ -2,43 +2,47 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.RecipeIngredient;
 import com.example.demo.service.RecipeIngredientService;
-
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/recipe-ingredients")
+@Tag(name = "Recipe Ingredients")
 public class RecipeIngredientController {
 
     private final RecipeIngredientService service;
 
-    public RecipeIngredientController(RecipeIngredientService service){
+    public RecipeIngredientController(RecipeIngredientService service) {
         this.service = service;
     }
 
     @PostMapping("/")
-    public RecipeIngredient add(
-            @RequestParam Long menuItemId,
-            @RequestParam Long ingredientId,
-            @RequestParam Double qty
-    ){
-        return service.add(menuItemId, ingredientId, qty);
+    public RecipeIngredient add(@RequestParam Long menuItemId,
+                                @RequestParam Long ingredientId,
+                                @RequestParam Double quantity) {
+        return service.addIngredientToRecipe(menuItemId, ingredientId, quantity);
     }
 
     @PutMapping("/{id}")
-    public RecipeIngredient update(
-            @PathVariable Long id,
-            @RequestParam Double qty){
-        return service.update(id, qty);
+    public RecipeIngredient update(@PathVariable Long id,
+                                   @RequestParam Double quantity) {
+        return service.updateRecipeIngredient(id, quantity);
     }
 
-    @GetMapping("/menu/{menuItemId}")
-    public List<RecipeIngredient> list(@PathVariable Long menuItemId){
-        return service.getRecipeForMenu(menuItemId);
+    @GetMapping("/menu-item/{menuItemId}")
+    public List<RecipeIngredient> getByMenuItem(@PathVariable Long menuItemId) {
+        return service.getIngredientsByMenuItem(menuItemId);
     }
 
     @DeleteMapping("/{id}")
-    public void remove(@PathVariable Long id){
-        service.delete(id);
+    public void delete(@PathVariable Long id) {
+        service.removeIngredientFromRecipe(id);
+    }
+
+    @GetMapping("/ingredient/{ingredientId}/total-quantity")
+    public Double totalQuantity(@PathVariable Long ingredientId) {
+        return service.getTotalQuantityOfIngredient(ingredientId);
     }
 }
