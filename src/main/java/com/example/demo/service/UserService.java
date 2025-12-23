@@ -48,7 +48,10 @@ public class UserService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        // ✅ RETURN JWT TOKEN
-        return jwtTokenProvider.createToken(user.getEmail(), user.getRole());
+        // ✅ JWT TOKEN
+        return jwtTokenProvider.createToken(
+                user.getEmail(),
+                user.getRole()
+        );
     }
 }

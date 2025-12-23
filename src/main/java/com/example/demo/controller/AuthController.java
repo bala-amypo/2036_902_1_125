@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,12 +17,18 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest req) {
-        return userService.register(req);
+    public ResponseEntity<String> register(@RequestBody RegisterRequest req) {
+        return ResponseEntity.ok(userService.register(req));
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody AuthRequest req) {
-        return userService.login(req); // ✅ TOKEN RETURNED
+    public ResponseEntity<?> login(@RequestBody AuthRequest req) {
+
+        String token = userService.login(req);
+
+        // ✅ RETURN TOKEN AS JSON (BEST PRACTICE)
+        return ResponseEntity.ok(
+                java.util.Map.of("token", token)
+        );
     }
 }
