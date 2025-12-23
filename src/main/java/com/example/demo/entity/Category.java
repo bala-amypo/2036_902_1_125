@@ -1,11 +1,11 @@
 package com.example.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "category")
+@Table(name = "category", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class Category {
 
     @Id
@@ -18,8 +18,6 @@ public class Category {
 
     @ManyToMany(mappedBy = "categories")
     private Set<MenuItem> menuItems = new HashSet<>();
-
-    // getters & setters
 
     public Long getId() {
         return id;
