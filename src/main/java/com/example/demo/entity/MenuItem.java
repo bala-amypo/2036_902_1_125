@@ -1,27 +1,21 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class MenuItem {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String name;
-
     private String description;
-
     private BigDecimal sellingPrice;
-
     private Boolean active = true;
 
     private Timestamp createdAt;
@@ -29,20 +23,21 @@ public class MenuItem {
 
     @ManyToMany
     @JoinTable(
-            name = "menuitem_category",
-            joinColumns = @JoinColumn(name="menuitem_id"),
-            inverseJoinColumns = @JoinColumn(name="category_id")
+        name = "menu_item_categories",
+        joinColumns = @JoinColumn(name = "menu_item_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<Category> categories = new HashSet<>();
+    private Set<Category> categories;
 
     @PrePersist
-    public void create(){
+    void create() {
         createdAt = new Timestamp(System.currentTimeMillis());
-        updatedAt = createdAt;
     }
 
     @PreUpdate
-    public void update(){
+    void update() {
         updatedAt = new Timestamp(System.currentTimeMillis());
     }
+
+    // getters & setters
 }

@@ -1,14 +1,12 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
 public class RecipeIngredient {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -18,4 +16,6 @@ public class RecipeIngredient {
     private Ingredient ingredient;
 
     private Double quantityRequired;
+
+    // getters & setters
 }
