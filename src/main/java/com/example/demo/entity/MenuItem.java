@@ -6,7 +6,10 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(
+    name = "menu_item",
+    uniqueConstraints = @UniqueConstraint(columnNames = "name")
+)
 public class MenuItem {
 
     @Id
@@ -30,15 +33,16 @@ public class MenuItem {
     private Set<Category> categories;
 
     @PrePersist
-    void create() {
+    void onCreate() {
         createdAt = new Timestamp(System.currentTimeMillis());
     }
 
     @PreUpdate
-    void update() {
+    void onUpdate() {
         updatedAt = new Timestamp(System.currentTimeMillis());
     }
 
+    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

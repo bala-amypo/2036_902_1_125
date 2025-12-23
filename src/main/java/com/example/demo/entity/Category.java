@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(
+    name = "category",
+    uniqueConstraints = @UniqueConstraint(columnNames = "name")
+)
 public class Category {
 
     @Id
@@ -18,6 +21,7 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     private Set<MenuItem> menuItems;
 
+    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -29,4 +33,7 @@ public class Category {
 
     public Boolean getActive() { return active; }
     public void setActive(Boolean active) { this.active = active; }
+
+    public Set<MenuItem> getMenuItems() { return menuItems; }
+    public void setMenuItems(Set<MenuItem> menuItems) { this.menuItems = menuItems; }
 }
