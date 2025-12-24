@@ -4,9 +4,14 @@ import com.example.demo.entity.Category;
 import java.util.List;
 
 public interface CategoryService {
-    Category createCategory(Category category);
-    Category updateCategory(Long id, Category category);
-    Category getCategoryById(Long id);
-    List<Category> getAllCategories();
-    void deactivateCategory(Long id);
+
+    Category create(Category category);
+
+    Category update(Long id, Category category);
+
+    Category getById(Long id);
+
+    List<Category> getAll();
+
+    void deactivate(Long id);
 }

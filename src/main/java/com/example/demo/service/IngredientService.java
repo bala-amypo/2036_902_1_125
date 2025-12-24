@@ -7,11 +7,11 @@ public interface IngredientService {
 
     Ingredient create(Ingredient ingredient);
 
-    List<Ingredient> getAll();
+    Ingredient update(Long id, Ingredient ingredient);
 
     Ingredient getById(Long id);
 
-    Ingredient update(Long id, Ingredient ingredient);
+    List<Ingredient> getAll();
 
     void deactivate(Long id);
 }
