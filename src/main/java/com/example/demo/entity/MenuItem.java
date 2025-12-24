@@ -2,28 +2,30 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "menu_item", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = "menu_items", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class MenuItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String name;
 
     private String description;
 
+    @Column(nullable = false)
     private BigDecimal sellingPrice;
 
     private Boolean active = true;
 
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @ManyToMany
     @JoinTable(
@@ -35,61 +37,25 @@ public class MenuItem {
 
     @PrePersist
     void onCreate() {
-        createdAt = new Timestamp(System.currentTimeMillis());
+        createdAt = LocalDateTime.now();
+        updatedAt = createdAt;
     }
 
     @PreUpdate
     void onUpdate() {
-        updatedAt = new Timestamp(System.currentTimeMillis());
+        updatedAt = LocalDateTime.now();
     }
 
-    // -------- GETTERS & SETTERS --------
+    public MenuItem() {}
 
-    public Long getId() {
-        return id;
-    }
+    // getters & setters
+    public Long getId() { return id; }
+    public BigDecimal getSellingPrice() { return sellingPrice; }
+    public Boolean getActive() { return active; }
+    public Set<Category> getCategories() { return categories; }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public BigDecimal getSellingPrice() {
-        return sellingPrice;
-    }
-
-    public void setSellingPrice(BigDecimal sellingPrice) {
-        this.sellingPrice = sellingPrice;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public Set<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
-    public void setId(Long id) {
-    this.id = id;
-}
-
+    public void setId(Long id) { this.id = id; }
+    public void setSellingPrice(BigDecimal sellingPrice) { this.sellingPrice = sellingPrice; }
+    public void setActive(Boolean active) { this.active = active; }
+    public void setCategories(Set<Category> categories) { this.categories = categories; }
 }
