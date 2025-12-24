@@ -1,55 +1,39 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.entity.Ingredient;
-import com.example.demo.repository.IngredientRepository;
-import com.example.demo.service.IngredientService;
-
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 @Service
 public class IngredientServiceImpl implements IngredientService {
 
-    private final IngredientRepository repository;
+    private final IngredientRepository ingredientRepository;
 
-    public IngredientServiceImpl(IngredientRepository repository) {
-        this.repository = repository;
+    public IngredientServiceImpl(IngredientRepository ingredientRepository) {
+        this.ingredientRepository = ingredientRepository;
     }
 
     @Override
-    public Ingredient create(Ingredient ingredient) {
-        ingredient.setActive(true);
-        return repository.save(ingredient);
-    }
+    public Ingredient update(Long id, Ingredient updated) {
 
-    @Override
-    public List<Ingredient> getAll() {
-        return repository.findAll();
-    }
+        Ingredient existing = ingredientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
 
-    @Override
-    public Ingredient getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
-    }
+        // ✅ PARTIAL SAFE UPDATE
 
-    @Override
-    public Ingredient update(Long id, Ingredient ingredient) {
+        if (updated.getName() != null && !updated.getName().isBlank()) {
+            existing.setName(updated.getName());
+        }
 
-        Ingredient existing = getById(id);
+        if (updated.getUnit() != null && !updated.getUnit().isBlank()) {
+            existing.setUnit(updated.getUnit());
+        }
 
-        existing.setName(ingredient.getName());
-        existing.setUnit(ingredient.getUnit());
-        existing.setCostPerUnit(ingredient.getCostPerUnit());
+        if (updated.getCostPerUnit() != null) {
+            if (updated.getCostPerUnit().compareTo(BigDecimal.ZERO) <= 0) {
+                throw new BadRequestException("Invalid cost per unit");
+            }
+            existing.setCostPerUnit(updated.getCostPerUnit());
+        }
 
-        return repository.save(existing);
-    }
+        if (updated.getActive() != null) {
+            existing.setActive(updated.getActive());
+        }
 
-    @Override
-    public void deactivate(Long id) {
-        Ingredient ingredient = getById(id);
-        ingredient.setActive(false);
-        repository.save(ingredient);
+        return ingredientRepository.save(existing);
     }
 }
