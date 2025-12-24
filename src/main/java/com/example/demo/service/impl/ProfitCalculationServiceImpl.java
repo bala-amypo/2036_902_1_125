@@ -37,15 +37,16 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
 
         double sellingPrice = menuItem.getSellingPrice();
 
-        // ✅ REAL COST CALCULATION
+        // ✅ REAL TOTAL COST
         double totalCost = 0.0;
 
         List<RecipeIngredient> recipeIngredients =
                 recipeIngredientRepository.findByMenuItem(menuItem);
 
         for (RecipeIngredient ri : recipeIngredients) {
-            totalCost += ri.getQuantityRequired()
-                    * ri.getIngredient().getCostPerUnit();
+            double quantity = ri.getQuantityRequired();
+            double costPerUnit = ri.getIngredient().getCostPerUnit();
+            totalCost += quantity * costPerUnit;
         }
 
         double profitMargin = sellingPrice - totalCost;
