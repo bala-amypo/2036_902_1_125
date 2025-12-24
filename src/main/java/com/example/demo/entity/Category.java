@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;   // ✅ ADD
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,11 +21,12 @@ public class Category {
     private Boolean active = true;
 
     @ManyToMany(mappedBy = "categories")
+    @JsonIgnore   // ✅ IMPORTANT: prevents infinite JSON loop
     private Set<MenuItem> menuItems = new HashSet<>();
 
     public Category() {}
 
-    // ===== REQUIRED GETTERS =====
+    // ===== GETTERS =====
 
     public Long getId() {
         return id;
@@ -46,7 +48,7 @@ public class Category {
         return menuItems;
     }
 
-    // ===== REQUIRED SETTERS =====
+    // ===== SETTERS =====
 
     public void setId(Long id) {
         this.id = id;

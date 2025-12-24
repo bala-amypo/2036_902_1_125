@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;   // ✅ ADD
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -33,6 +34,7 @@ public class MenuItem {
         joinColumns = @JoinColumn(name = "menu_item_id"),
         inverseJoinColumns = @JoinColumn(name = "category_id")
     )
+    @JsonIgnoreProperties("menuItems")  // ✅ IMPORTANT
     private Set<Category> categories = new HashSet<>();
 
     @PrePersist
@@ -48,7 +50,7 @@ public class MenuItem {
 
     public MenuItem() {}
 
-    // ===== REQUIRED GETTERS =====
+    // ===== GETTERS =====
 
     public Long getId() {
         return id;
@@ -82,7 +84,7 @@ public class MenuItem {
         return updatedAt;
     }
 
-    // ===== REQUIRED SETTERS =====
+    // ===== SETTERS =====
 
     public void setId(Long id) {
         this.id = id;
