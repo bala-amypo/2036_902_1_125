@@ -25,7 +25,7 @@ public class IngredientController {
 
     @PostMapping
     public ResponseEntity<Ingredient> create(@RequestBody Ingredient ingredient) {
-        return ResponseEntity.ok(service.create(ingredient)); // ✅ 200
+        return ResponseEntity.ok(service.create(ingredient)); // ✅ 200 OK
     }
 
     @GetMapping
