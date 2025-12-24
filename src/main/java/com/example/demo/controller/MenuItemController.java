@@ -5,40 +5,41 @@ import com.example.demo.service.MenuItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/menu-items")
 public class MenuItemController {
 
-    private final MenuItemService service;
+    private final MenuItemService menuItemService;
 
-    public MenuItemController(MenuItemService service) {
-        this.service = service;
+    public MenuItemController(MenuItemService menuItemService) {
+        this.menuItemService = menuItemService;
     }
 
+    // ✅ FIXED: RETURNS 200 OK
     @PostMapping
     public ResponseEntity<MenuItem> create(@RequestBody MenuItem item) {
-        return ResponseEntity.status(201).body(service.createMenuItem(item));
-    }
-
-    @GetMapping
-    public List<MenuItem> getAll() {
-        return service.getAllMenuItems();
+        MenuItem saved = menuItemService.createMenuItem(item);
+        return ResponseEntity.ok(saved);   // 👈 200 OK
     }
 
     @GetMapping("/{id}")
     public MenuItem getById(@PathVariable Long id) {
-        return service.getMenuItemById(id);
+        return menuItemService.getMenuItemById(id);
+    }
+
+    @GetMapping
+    public java.util.List<MenuItem> getAll() {
+        return menuItemService.getAllMenuItems();
     }
 
     @PutMapping("/{id}")
-    public MenuItem update(@PathVariable Long id, @RequestBody MenuItem item) {
-        return service.updateMenuItem(id, item);
+    public MenuItem update(@PathVariable Long id,
+                           @RequestBody MenuItem item) {
+        return menuItemService.updateMenuItem(id, item);
     }
 
     @PutMapping("/{id}/deactivate")
     public void deactivate(@PathVariable Long id) {
-        service.deactivateMenuItem(id);
+        menuItemService.deactivateMenuItem(id);
     }
 }

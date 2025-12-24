@@ -6,7 +6,6 @@ import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "auth-controller")
-@SecurityRequirement(name = "")   // ✅ MAKES AUTH CONTROLLER VISIBLE IN SWAGGER
+@SecurityRequirement(name = "")   // keeps auth controller visible in Swagger
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -33,32 +32,29 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @Operation(summary = "Register a new user")
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.status(201).body(userService.register(request));
     }
 
-    @Operation(summary = "Login and get JWT token")
-   @PostMapping("/login")
-public AuthResponse login(@RequestBody AuthRequest request) {
+    @PostMapping("/login")
+    public AuthResponse login(@RequestBody AuthRequest request) {
 
-    Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                    request.getEmail(), request.getPassword()
-            )
-    );
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(), request.getPassword()
+                )
+        );
 
-    User user = userService.login(request);
+        User user = userService.login(request);
 
-    String token = jwtTokenProvider.generateToken(authentication, user);
+        String token = jwtTokenProvider.generateToken(authentication, user);
 
-    return new AuthResponse(
-            token,
-            user.getId(),
-            user.getEmail(),
-            user.getRole()
-    );
-}
-
+        return new AuthResponse(
+                token,
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
+        );
+    }
 }
