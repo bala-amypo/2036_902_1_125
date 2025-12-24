@@ -26,7 +26,7 @@ public class SecurityConfig {
     }
 
     /**
-     * JWT Authentication Filter as a Spring Bean
+     * JWT Authentication Filter Bean
      */
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -34,29 +34,36 @@ public class SecurityConfig {
     }
 
     /**
-     * Security filter chain
+     * Main Security Filter Chain
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            // ❌ Disable CSRF (JWT based)
+            // ✅ Disable CSRF (JWT based stateless API)
             .csrf(csrf -> csrf.disable())
 
-            // ❌ No HTTP session
+            // ✅ Stateless session
             .sessionManagement(sm ->
                 sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
 
             // ✅ Authorization rules
             .authorizeHttpRequests(auth -> auth
+                // Public endpoints
                 .requestMatchers(
                         "/auth/**",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
+                        "/swagger-ui.html",
                         "/hello-servlet"
                 ).permitAll()
-                .requestMatchers("/api/**").authenticated()
+
+                // 🔥 FIX: Allow ALL HTTP METHODS for API with roles
+                .requestMatchers("/api/**").hasAnyRole("USER", "ADMIN")
+
+                // Any other request
+                .anyRequest().authenticated()
             )
 
             // ✅ JWT filter
@@ -69,7 +76,7 @@ public class SecurityConfig {
     }
 
     /**
-     * Authentication manager
+     * Authentication Manager
      */
     @Bean
     public AuthenticationManager authenticationManager(
@@ -78,7 +85,7 @@ public class SecurityConfig {
     }
 
     /**
-     * Password encoder
+     * Password Encoder
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
