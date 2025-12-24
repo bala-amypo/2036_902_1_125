@@ -1,10 +1,11 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "profit_calculation_record")
+@Table(name = "profit_calculations")
 public class ProfitCalculationRecord {
 
     @Id
@@ -14,14 +15,12 @@ public class ProfitCalculationRecord {
     @ManyToOne
     private MenuItem menuItem;
 
-    private double totalCost;
-
-    private double profitMargin;
+    private BigDecimal totalCost;
+    private BigDecimal profitMargin;
 
     private Timestamp calculatedAt;
 
-    public ProfitCalculationRecord() {
-    }
+    public ProfitCalculationRecord() {}
 
     public Long getId() {
         return id;
@@ -35,19 +34,19 @@ public class ProfitCalculationRecord {
         this.menuItem = menuItem;
     }
 
-    public double getTotalCost() {
+    public BigDecimal getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(double totalCost) {
+    public void setTotalCost(BigDecimal totalCost) {
         this.totalCost = totalCost;
     }
 
-    public double getProfitMargin() {
+    public BigDecimal getProfitMargin() {
         return profitMargin;
     }
 
-    public void setProfitMargin(double profitMargin) {
+    public void setProfitMargin(BigDecimal profitMargin) {
         this.profitMargin = profitMargin;
     }
 

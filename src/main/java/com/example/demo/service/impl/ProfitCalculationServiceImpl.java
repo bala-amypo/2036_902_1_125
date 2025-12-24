@@ -9,6 +9,7 @@ import com.example.demo.repository.RecipeIngredientRepository;
 import com.example.demo.service.ProfitCalculationService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -35,21 +36,19 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
         MenuItem menuItem = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new RuntimeException("Menu item not found"));
 
-        double sellingPrice = menuItem.getSellingPrice();
-
-        // ✅ REAL TOTAL COST
-        double totalCost = 0.0;
+        BigDecimal sellingPrice = menuItem.getSellingPrice();
+        BigDecimal totalCost = BigDecimal.ZERO;
 
         List<RecipeIngredient> recipeIngredients =
                 recipeIngredientRepository.findByMenuItem(menuItem);
 
         for (RecipeIngredient ri : recipeIngredients) {
-            double quantity = ri.getQuantityRequired();
-            double costPerUnit = ri.getIngredient().getCostPerUnit();
-            totalCost += quantity * costPerUnit;
+            BigDecimal quantity = BigDecimal.valueOf(ri.getQuantityRequired());
+            BigDecimal costPerUnit = ri.getIngredient().getCostPerUnit();
+            totalCost = totalCost.add(quantity.multiply(costPerUnit));
         }
 
-        double profitMargin = sellingPrice - totalCost;
+        BigDecimal profitMargin = sellingPrice.subtract(totalCost);
 
         ProfitCalculationRecord record = new ProfitCalculationRecord();
         record.setMenuItem(menuItem);
