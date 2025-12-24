@@ -59,8 +59,8 @@ public class SecurityConfig {
                         "/hello-servlet"
                 ).permitAll()
 
-                // 🔥 FIX: Allow ALL HTTP METHODS for API with roles
-                .requestMatchers("/api/**").hasAnyRole("USER", "ADMIN")
+                // 🔥 FINAL FIX — MATCH JWT EXACTLY
+                .requestMatchers("/api/**").hasAuthority("USER")
 
                 // Any other request
                 .anyRequest().authenticated()
