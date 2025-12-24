@@ -43,11 +43,12 @@ public class SecurityConfig {
                         "/auth/**",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
-                        "/swagger-ui.html"
+                        "/swagger-ui.html",
+                        "/hello-servlet"
                 ).permitAll()
 
-                // ✅ FIXED HERE
-                .requestMatchers("/api/**").hasAuthority("USER")
+                // ✅ CORRECT ROLE CHECK
+                .requestMatchers("/api/**").hasRole("USER")
 
                 .anyRequest().authenticated()
             )
