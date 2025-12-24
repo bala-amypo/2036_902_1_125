@@ -41,12 +41,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtTokenProvider.validateToken(token)) {
 
                 String email = jwtTokenProvider.getEmailFromToken(token);
-                String role = jwtTokenProvider.getRoleFromToken(token); // USER / ADMIN
+                String role = jwtTokenProvider.getRoleFromToken(token);
 
                 UserDetails userDetails =
                         customUserDetailsService.loadUserByUsername(email);
 
-                // ✅ IMPORTANT: Prefix ROLE_
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails,
