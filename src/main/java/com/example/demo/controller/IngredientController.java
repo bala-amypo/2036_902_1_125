@@ -1,51 +1,46 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Ingredient;
-import com.example.demo.service.impl.IngredientServiceImpl;
+import com.example.demo.service.IngredientService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/ingredients")
+@Tag(name = "Ingredients")
 public class IngredientController {
 
-    private final IngredientServiceImpl service;
+    private final IngredientService service;
 
-    public IngredientController(IngredientServiceImpl service) {
+    public IngredientController(IngredientService service) {
         this.service = service;
     }
 
-    // CREATE ingredient
     @PostMapping("/")
-    public Ingredient createIngredient(@RequestBody Ingredient ingredient) {
+    public Ingredient create(@RequestBody Ingredient ingredient) {
         return service.createIngredient(ingredient);
     }
 
-    // UPDATE ingredient
     @PutMapping("/{id}")
-    public Ingredient updateIngredient(
-            @PathVariable long id,
-            @RequestBody Ingredient ingredient
-    ) {
+    public Ingredient update(@PathVariable Long id,
+                             @RequestBody Ingredient ingredient) {
         return service.updateIngredient(id, ingredient);
     }
 
-    // GET ingredient by ID
     @GetMapping("/{id}")
-    public Ingredient getIngredientById(@PathVariable long id) {
+    public Ingredient get(@PathVariable Long id) {
         return service.getIngredientById(id);
     }
 
-    // GET all ingredients
     @GetMapping("/")
-    public List<Ingredient> getAllIngredients() {
+    public List<Ingredient> getAll() {
         return service.getAllIngredients();
     }
 
-    // DEACTIVATE ingredient
     @PutMapping("/{id}/deactivate")
-    public void deactivateIngredient(@PathVariable long id) {
+    public void deactivate(@PathVariable Long id) {
         service.deactivateIngredient(id);
     }
 }

@@ -1,9 +1,11 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "ingredients")
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class Ingredient {
 
     @Id
@@ -12,44 +14,34 @@ public class Ingredient {
 
     private String name;
     private String unit;
-    private double costPerUnit;
-    private boolean active = true;
+    private BigDecimal costPerUnit;
+    private Boolean active = true;
 
-    public Ingredient() {}
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
-    public Long getId() {
-        return id;
+    @PrePersist
+    void create() {
+        createdAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public String getName() {
-        return name;
+    @PreUpdate
+    void update() {
+        updatedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getUnit() {
-        return unit;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
+    public String getUnit() { return unit; }
+    public void setUnit(String unit) { this.unit = unit; }
 
-    public double getCostPerUnit() {
-        return costPerUnit;
-    }
+    public BigDecimal getCostPerUnit() { return costPerUnit; }
+    public void setCostPerUnit(BigDecimal costPerUnit) { this.costPerUnit = costPerUnit; }
 
-    public void setCostPerUnit(double costPerUnit) {
-        this.costPerUnit = costPerUnit;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }
