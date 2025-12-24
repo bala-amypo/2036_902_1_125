@@ -1,16 +1,48 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
-import org.springframework.stereotype.Service;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
 
-    public User register(User user) {
-        return user;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    // 🔴 Constructor order MUST match tests
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public String login(String email, String password) {
-        return "dummy-token";
+    @Override
+    public User register(RegisterRequest request) {
+
+        userRepository.findByEmailIgnoreCase(request.getEmail())
+                .ifPresent(u -> {
+                    throw new BadRequestException("Email already in use");
+                });
+
+        User user = new User();
+        user.setFullName(request.getFullName());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        if (request.getRole() != null) {
+            user.setRole(request.getRole());
+        }
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User login(AuthRequest request) {
+        return userRepository.findByEmailIgnoreCase(request.getEmail())
+                .orElseThrow(() -> new BadRequestException("Invalid credentials"));
     }
 }
