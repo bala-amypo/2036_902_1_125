@@ -1,27 +1,45 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.RegisterRequest;
+import com.example.demo.dto.*;
+import com.example.demo.entity.User;
+import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
 
-    public AuthController(UserService userService) {
+    public AuthController(AuthenticationManager authenticationManager,
+                          JwtTokenProvider jwtTokenProvider,
+                          UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest req) {
-        return userService.register(req);
+    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.status(201).body(userService.register(request));
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody AuthRequest req) {
-        return userService.login(req); // ✅ RETURNS TOKEN
+    public AuthResponse login(@RequestBody AuthRequest request) {
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(), request.getPassword()
+                )
+        );
+
+        User user = userService.login(request);
+        String token = jwtTokenProvider.generateToken(auth, user);
+
+        return new AuthResponse(token, user.getId(), user.getEmail(), user.getRole());
     }
 }

@@ -16,36 +16,28 @@ public class CategoryController {
         this.service = service;
     }
 
-    // ✅ CREATE CATEGORY
-    @PostMapping("/")
+    @PostMapping
     public Category create(@RequestBody Category category) {
-        return service.create(category);
+        return service.createCategory(category);
     }
 
-    // ✅ UPDATE CATEGORY
-    @PutMapping("/{id}")
-    public Category update(
-            @PathVariable Long id,
-            @RequestBody Category category
-    ) {
-        return service.update(id, category);
+    @GetMapping
+    public List<Category> getAll() {
+        return service.getAllCategories();
     }
 
-    // ✅ GET CATEGORY BY ID
     @GetMapping("/{id}")
     public Category getById(@PathVariable Long id) {
-        return service.getById(id);
+        return service.getCategoryById(id);
     }
 
-    // ✅ GET ALL CATEGORIES
-    @GetMapping("/")
-    public List<Category> getAll() {
-        return service.getAll();
+    @PutMapping("/{id}")
+    public Category update(@PathVariable Long id, @RequestBody Category category) {
+        return service.updateCategory(id, category);
     }
 
-    // ✅ SOFT DELETE (DEACTIVATE)
     @PutMapping("/{id}/deactivate")
     public void deactivate(@PathVariable Long id) {
-        service.deactivate(id);
+        service.deactivateCategory(id);
     }
 }

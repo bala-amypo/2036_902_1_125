@@ -2,14 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.ProfitCalculationRecord;
 import com.example.demo.service.ProfitCalculationService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/profit")
-@Tag(name = "Profit Calculation")
 public class ProfitCalculationController {
 
     private final ProfitCalculationService service;
@@ -29,11 +27,11 @@ public class ProfitCalculationController {
     }
 
     @GetMapping("/menu-item/{menuItemId}")
-    public List<ProfitCalculationRecord> getByMenuItem(@PathVariable Long menuItemId) {
+    public List<ProfitCalculationRecord> history(@PathVariable Long menuItemId) {
         return service.getCalculationsForMenuItem(menuItemId);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<ProfitCalculationRecord> getAll() {
         return service.getAllCalculations();
     }
