@@ -1,13 +1,11 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "menu_item", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = "menu_items")
 public class MenuItem {
 
     @Id
@@ -15,15 +13,9 @@ public class MenuItem {
     private Long id;
 
     private String name;
-
     private String description;
-
-    private BigDecimal sellingPrice;
-
-    private Boolean active = true;
-
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private Double sellingPrice;
+    private boolean active = true;
 
     @ManyToMany
     @JoinTable(
@@ -33,17 +25,7 @@ public class MenuItem {
     )
     private Set<Category> categories = new HashSet<>();
 
-    @PrePersist
-    void onCreate() {
-        createdAt = new Timestamp(System.currentTimeMillis());
-    }
-
-    @PreUpdate
-    void onUpdate() {
-        updatedAt = new Timestamp(System.currentTimeMillis());
-    }
-
-    // -------- GETTERS & SETTERS --------
+    public MenuItem() {}
 
     public Long getId() {
         return id;
@@ -65,19 +47,19 @@ public class MenuItem {
         this.description = description;
     }
 
-    public BigDecimal getSellingPrice() {
+    public Double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(BigDecimal sellingPrice) {
+    public void setSellingPrice(Double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 
-    public Boolean getActive() {
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
