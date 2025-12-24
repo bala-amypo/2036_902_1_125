@@ -8,7 +8,6 @@ import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.repository.RecipeIngredientRepository;
 import com.example.demo.service.MenuItemService;
-
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -31,7 +30,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         this.categoryRepository = categoryRepository;
     }
 
-    // ================= CREATE =================
+    // CREATE
     @Override
     public MenuItem createMenuItem(MenuItem item) {
 
@@ -61,20 +60,17 @@ public class MenuItemServiceImpl implements MenuItemService {
         return menuItemRepository.save(item);
     }
 
-    // ================= UPDATE (PARTIAL SAFE UPDATE) =================
+    // PARTIAL UPDATE
     @Override
     public MenuItem updateMenuItem(Long id, MenuItem updated) {
 
-        MenuItem existing = menuItemRepository.findById(id)
+        MenuItem existing = menuItemRepository.findByIdWithCategories(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
 
-        // 🔒 Business rule: activating requires recipe
         if (Boolean.TRUE.equals(updated.getActive()) &&
                 !recipeIngredientRepository.existsByMenuItemId(id)) {
             throw new BadRequestException("Menu item must have recipe ingredients");
         }
-
-        // ✅ Update ONLY fields provided
 
         if (updated.getName() != null && !updated.getName().isBlank()) {
             existing.setName(updated.getName());
@@ -111,19 +107,19 @@ public class MenuItemServiceImpl implements MenuItemService {
         return menuItemRepository.save(existing);
     }
 
-    // ================= READ =================
+    // READ
     @Override
     public MenuItem getMenuItemById(Long id) {
-        return menuItemRepository.findById(id)
+        return menuItemRepository.findByIdWithCategories(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
     }
 
     @Override
     public List<MenuItem> getAllMenuItems() {
-        return menuItemRepository.findAll();
+        return menuItemRepository.findAllActiveWithCategories();
     }
 
-    // ================= DEACTIVATE =================
+    // DEACTIVATE
     @Override
     public void deactivateMenuItem(Long id) {
         MenuItem item = getMenuItemById(id);

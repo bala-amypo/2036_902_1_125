@@ -5,6 +5,8 @@ import com.example.demo.service.MenuItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/menu-items")
 public class MenuItemController {
@@ -15,11 +17,9 @@ public class MenuItemController {
         this.menuItemService = menuItemService;
     }
 
-    // ✅ FIXED: RETURNS 200 OK
     @PostMapping
     public ResponseEntity<MenuItem> create(@RequestBody MenuItem item) {
-        MenuItem saved = menuItemService.createMenuItem(item);
-        return ResponseEntity.ok(saved);   // 👈 200 OK
+        return ResponseEntity.ok(menuItemService.createMenuItem(item));
     }
 
     @GetMapping("/{id}")
@@ -28,7 +28,7 @@ public class MenuItemController {
     }
 
     @GetMapping
-    public java.util.List<MenuItem> getAll() {
+    public List<MenuItem> getAll() {
         return menuItemService.getAllMenuItems();
     }
 
