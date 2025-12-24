@@ -2,7 +2,6 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ingredients", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
@@ -22,29 +21,14 @@ public class Ingredient {
 
     private Boolean active = true;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = createdAt;
-    }
-
-    @PreUpdate
-    void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
-
-    public Ingredient() {}
-
-    // getters and setters
+    // ===== GETTERS =====
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getUnit() { return unit; }
     public BigDecimal getCostPerUnit() { return costPerUnit; }
     public Boolean getActive() { return active; }
 
+    // ===== SETTERS =====
     public void setId(Long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setUnit(String unit) { this.unit = unit; }
