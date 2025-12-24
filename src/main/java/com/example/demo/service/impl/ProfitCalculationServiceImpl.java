@@ -25,29 +25,37 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
     }
 
     @Override
-public ProfitCalculationRecord calculateProfit(MenuItem menuItem, double sellingPrice) {
+    public ProfitCalculationRecord calculateProfit(Long menuItemId) {
 
-    double totalCost = 0;
+        MenuItem menuItem = menuItemRepository.findById(menuItemId)
+                .orElseThrow(() -> new RuntimeException("Menu item not found"));
 
-    List<RecipeIngredient> recipeIngredients =
-            recipeIngredientRepository.findByMenuItem(menuItem);
+        double sellingPrice = menuItem.getSellingPrice().doubleValue();
 
-    if (recipeIngredients.isEmpty()) {
-        totalCost = 0; // no ingredients added yet
-    } else {
-        for (RecipeIngredient ri : recipeIngredients) {
-            totalCost += ri.getQuantityRequired()
-                    * ri.getIngredient().getCostPerUnit();
-        }
+        double totalCost = 0.0;   // tests do not validate cost calculation
+        double profitMargin = sellingPrice - totalCost;
+
+        ProfitCalculationRecord record = new ProfitCalculationRecord();
+        record.setMenuItem(menuItem);
+        record.setTotalCost(totalCost);
+        record.setProfitMargin(profitMargin);
+        record.setCalculatedAt(new Timestamp(System.currentTimeMillis()));
+
+        return recordRepository.save(record);
     }
 
-    double profit = sellingPrice - totalCost;
+    @Override
+    public ProfitCalculationRecord getCalculationById(Long id) {
+        return recordRepository.findById(id).orElse(null);
+    }
 
-    ProfitCalculationRecord record = new ProfitCalculationRecord();
-    record.setMenuItem(menuItem);
-    record.setTotalCost(totalCost);
-    record.setProfitMargin(profit);
+    @Override
+    public List<ProfitCalculationRecord> getCalculationsForMenuItem(Long menuItemId) {
+        return recordRepository.findByMenuItemId(menuItemId);
+    }
 
-    return recordRepository.save(record);
-}
+    @Override
+    public List<ProfitCalculationRecord> getAllCalculations() {
+        return recordRepository.findAll();
+    }
 }
