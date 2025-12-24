@@ -1,26 +1,51 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Ingredient;
-import com.example.demo.service.IngredientService;
+import com.example.demo.service.impl.IngredientServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/ingredients")
+@RequestMapping("/api/ingredients")
 public class IngredientController {
 
-    private final IngredientService service;
+    private final IngredientServiceImpl service;
 
-    public IngredientController(IngredientService service) {
+    public IngredientController(IngredientServiceImpl service) {
         this.service = service;
     }
 
-    // REQUIRED BY TESTS
-    public Ingredient createIngredient(Ingredient ingredient) {
-        return ingredient;
+    // CREATE ingredient
+    @PostMapping("/")
+    public Ingredient createIngredient(@RequestBody Ingredient ingredient) {
+        return service.createIngredient(ingredient);
     }
 
-    // REQUIRED BY TESTS
-    public void deactivateIngredient(long id) {
-        // no-op
+    // UPDATE ingredient
+    @PutMapping("/{id}")
+    public Ingredient updateIngredient(
+            @PathVariable long id,
+            @RequestBody Ingredient ingredient
+    ) {
+        return service.updateIngredient(id, ingredient);
+    }
+
+    // GET ingredient by ID
+    @GetMapping("/{id}")
+    public Ingredient getIngredientById(@PathVariable long id) {
+        return service.getIngredientById(id);
+    }
+
+    // GET all ingredients
+    @GetMapping("/")
+    public List<Ingredient> getAllIngredients() {
+        return service.getAllIngredients();
+    }
+
+    // DEACTIVATE ingredient
+    @PutMapping("/{id}/deactivate")
+    public void deactivateIngredient(@PathVariable long id) {
+        service.deactivateIngredient(id);
     }
 }
