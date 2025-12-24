@@ -40,23 +40,25 @@ public class AuthController {
     }
 
     @Operation(summary = "Login and get JWT token")
-    @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest request) {
+   @PostMapping("/login")
+public AuthResponse login(@RequestBody AuthRequest request) {
 
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(), request.getPassword()
-                )
-        );
+    Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                    request.getEmail(), request.getPassword()
+            )
+    );
 
-        User user = userService.login(request);
-        String token = jwtTokenProvider.generateToken(auth, user);
+    User user = userService.login(request);
 
-        return new AuthResponse(
-                token,
-                user.getId(),
-                user.getEmail(),
-                user.getRole()
-        );
-    }
+    String token = jwtTokenProvider.generateToken(authentication, user);
+
+    return new AuthResponse(
+            token,
+            user.getId(),
+            user.getEmail(),
+            user.getRole()
+    );
+}
+
 }
