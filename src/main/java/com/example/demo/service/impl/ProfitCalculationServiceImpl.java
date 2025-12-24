@@ -30,7 +30,8 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
         MenuItem menuItem = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new RuntimeException("Menu item not found"));
 
-        double sellingPrice = menuItem.getSellingPrice();
+        double sellingPrice = menuItem.getSellingPrice().doubleValue();
+
         double totalCost = 0.0;   // tests do not validate cost calculation
         double profitMargin = sellingPrice - totalCost;
 
