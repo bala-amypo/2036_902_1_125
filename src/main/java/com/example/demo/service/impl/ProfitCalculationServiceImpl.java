@@ -1,34 +1,34 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.entity.MenuItem;
 import com.example.demo.entity.ProfitCalculationRecord;
+import com.example.demo.repository.ProfitCalculationRecordRepository;
+import com.example.demo.service.ProfitCalculationService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
-public class ProfitCalculationServiceImpl {
+public class ProfitCalculationServiceImpl implements ProfitCalculationService {
 
-    public ProfitCalculationRecord calculateProfit(long menuItemId) {
+    private final ProfitCalculationRecordRepository repository;
+
+    public ProfitCalculationServiceImpl(ProfitCalculationRecordRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public ProfitCalculationRecord calculateProfit(MenuItem menuItem, double totalCost) {
+
+        double sellingPrice = menuItem.getSellingPrice();
+        double profitMargin = sellingPrice - totalCost;
+
         ProfitCalculationRecord record = new ProfitCalculationRecord();
-        record.setTotalCost(0.0);
-        record.setProfitMargin(0.0);
+        record.setMenuItem(menuItem);
+        record.setTotalCost(totalCost);
+        record.setProfitMargin(profitMargin);
         record.setCalculatedAt(LocalDateTime.now());
-        return record;
-    }
 
-    public ProfitCalculationRecord getById(long id) {
-        ProfitCalculationRecord record = new ProfitCalculationRecord();
-        record.setId(id);
-        return record;
-    }
-
-    public List<ProfitCalculationRecord> getAll() {
-        return new ArrayList<>();
-    }
-
-    public List<ProfitCalculationRecord> getByMenuItem(long menuItemId) {
-        return new ArrayList<>();
+        return repository.save(record);
     }
 }

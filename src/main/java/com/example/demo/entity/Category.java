@@ -46,4 +46,8 @@ public class Category {
     public void setActive(Boolean active) {
         this.active = active;
     }
+    public void setId(Long id) {
+    this.id = id;
+}
+
 }

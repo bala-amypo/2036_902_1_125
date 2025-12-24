@@ -88,4 +88,8 @@ public class MenuItem {
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }
+    public void setId(Long id) {
+    this.id = id;
+}
+
 }
