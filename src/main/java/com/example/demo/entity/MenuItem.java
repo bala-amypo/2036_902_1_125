@@ -48,14 +48,63 @@ public class MenuItem {
 
     public MenuItem() {}
 
-    // getters & setters
-    public Long getId() { return id; }
-    public BigDecimal getSellingPrice() { return sellingPrice; }
-    public Boolean getActive() { return active; }
-    public Set<Category> getCategories() { return categories; }
+    // ===== REQUIRED GETTERS =====
 
-    public void setId(Long id) { this.id = id; }
-    public void setSellingPrice(BigDecimal sellingPrice) { this.sellingPrice = sellingPrice; }
-    public void setActive(Boolean active) { this.active = active; }
-    public void setCategories(Set<Category> categories) { this.categories = categories; }
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public BigDecimal getSellingPrice() {
+        return sellingPrice;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    // ===== REQUIRED SETTERS =====
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setSellingPrice(BigDecimal sellingPrice) {
+        this.sellingPrice = sellingPrice;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
 }
