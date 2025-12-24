@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "Authentication", description = "Login & Registration APIs")
+@Tag(name = "AuthController")
 @SecurityRequirement(name = "")   // ✅ MAKES AUTH CONTROLLER VISIBLE IN SWAGGER
 public class AuthController {
 
