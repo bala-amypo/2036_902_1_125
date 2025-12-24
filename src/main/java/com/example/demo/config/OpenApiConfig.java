@@ -13,11 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfig {
 
-    /**
-     * Global OpenAPI configuration
-     * - Defines JWT bearer authentication
-     * - Applies security globally (except where overridden)
-     */
     @Bean
     public OpenAPI openAPI() {
 
@@ -32,40 +27,31 @@ public class OpenApiConfig {
                         .title("Menu Profitability Calculator API")
                         .version("1.0")
                         .description(
-                                "APIs for managing ingredients, menu items, categories, recipes, and profit calculations"
+                                "APIs for authentication, ingredients, menu items, categories, recipes, and profit calculations"
                         )
                 )
                 .components(
                         new Components()
                                 .addSecuritySchemes("bearerAuth", bearerAuth)
                 )
-                // 🔐 Apply JWT security globally (Swagger Authorize button)
+                // Global JWT (Authorize button)
                 .addSecurityItem(
                         new SecurityRequirement().addList("bearerAuth")
                 );
     }
 
     /**
-     * Group for secured business APIs
-     * All endpoints under /api/**
+     * SINGLE Swagger group:
+     * - Includes BOTH /api/** and /auth/**
      */
     @Bean
     public GroupedOpenApi apiGroup() {
         return GroupedOpenApi.builder()
                 .group("api")
-                .pathsToMatch("/api/**")
-                .build();
-    }
-
-    /**
-     * Group for authentication APIs
-     * Public endpoints: /auth/register, /auth/login
-     */
-    @Bean
-    public GroupedOpenApi authGroup() {
-        return GroupedOpenApi.builder()
-                .group("auth")
-                .pathsToMatch("/auth/**")
+                .pathsToMatch(
+                        "/api/**",
+                        "/auth/**"
+                )
                 .build();
     }
 }
