@@ -31,7 +31,8 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .setSubject(user.getEmail())
-                .claim("role", user.getRole()) // USER / ADMIN
+                // ✅ STORE RAW ROLE (USER / ADMIN)
+                .claim("role", user.getRole())
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(key, SignatureAlgorithm.HS256)
