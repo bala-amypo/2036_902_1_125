@@ -1,12 +1,10 @@
 package com.example.demo.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
+@Table(name = "profit_calculations")
 public class ProfitCalculationRecord {
 
     @Id
@@ -16,30 +14,48 @@ public class ProfitCalculationRecord {
     @ManyToOne
     private MenuItem menuItem;
 
-    private BigDecimal totalCost;
-    private BigDecimal profitMargin;
+    private double totalCost;
+
+    private double profitMargin;
+
     private Timestamp calculatedAt;
 
-    @PrePersist
-    void calc() {
-        calculatedAt = new Timestamp(System.currentTimeMillis());
+    public ProfitCalculationRecord() {
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public MenuItem getMenuItem() { return menuItem; }
-    public void setMenuItem(MenuItem menuItem) { this.menuItem = menuItem; }
+    public MenuItem getMenuItem() {
+        return menuItem;
+    }
 
-    public BigDecimal getTotalCost() { return totalCost; }
-    public void setTotalCost(BigDecimal totalCost) { this.totalCost = totalCost; }
+    public void setMenuItem(MenuItem menuItem) {
+        this.menuItem = menuItem;
+    }
 
-    public BigDecimal getProfitMargin() { return profitMargin; }
-    public void setProfitMargin(BigDecimal profitMargin) { this.profitMargin = profitMargin; }
+    public double getTotalCost() {
+        return totalCost;
+    }
 
-    public Timestamp getCalculatedAt() { return calculatedAt; }
-    public void setCalculatedAt(LocalDateTime calculatedAt) {
-    this.calculatedAt = calculatedAt;
-}
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
+    }
 
+    public double getProfitMargin() {
+        return profitMargin;
+    }
+
+    public void setProfitMargin(double profitMargin) {
+        this.profitMargin = profitMargin;
+    }
+
+    public Timestamp getCalculatedAt() {
+        return calculatedAt;
+    }
+
+    public void setCalculatedAt(Timestamp calculatedAt) {
+        this.calculatedAt = calculatedAt;
+    }
 }
