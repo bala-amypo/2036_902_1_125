@@ -2,6 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Ingredient;
 import com.example.demo.service.IngredientService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/ingredients")
+@Tag(name = "ingredient-controller")
+@SecurityRequirement(name = "bearerAuth")
 public class IngredientController {
 
     private final IngredientService service;
@@ -19,26 +25,29 @@ public class IngredientController {
 
     @PostMapping
     public ResponseEntity<Ingredient> create(@RequestBody Ingredient ingredient) {
-        return ResponseEntity.status(201).body(service.createIngredient(ingredient));
+        return ResponseEntity.ok(service.create(ingredient)); // ✅ 200
     }
 
     @GetMapping
-    public List<Ingredient> getAll() {
-        return service.getAllIngredients();
+    public ResponseEntity<List<Ingredient>> getAll() {
+        return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/{id}")
-    public Ingredient getById(@PathVariable Long id) {
-        return service.getIngredientById(id);
+    public ResponseEntity<Ingredient> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getById(id));
     }
 
     @PutMapping("/{id}")
-    public Ingredient update(@PathVariable Long id, @RequestBody Ingredient ingredient) {
-        return service.updateIngredient(id, ingredient);
+    public ResponseEntity<Ingredient> update(
+            @PathVariable Long id,
+            @RequestBody Ingredient ingredient) {
+        return ResponseEntity.ok(service.update(id, ingredient));
     }
 
     @PutMapping("/{id}/deactivate")
-    public void deactivate(@PathVariable Long id) {
-        service.deactivateIngredient(id);
+    public ResponseEntity<Void> deactivate(@PathVariable Long id) {
+        service.deactivate(id);
+        return ResponseEntity.ok().build();
     }
 }
