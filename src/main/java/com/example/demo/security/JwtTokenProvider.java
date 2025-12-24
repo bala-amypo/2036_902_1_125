@@ -11,7 +11,7 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    // 🔐 Secret key (min 32 chars for HS256)
+    // 🔐 Secret key (min 32 chars)
     private static final String SECRET_KEY =
             "menu-profitability-secret-key-1234567890";
 
@@ -26,16 +26,12 @@ public class JwtTokenProvider {
     public String generateToken(Authentication authentication,
                                 com.example.demo.entity.User user) {
 
-        Claims claims = Jwts.claims()
-                .setSubject(user.getEmail());
-
-        claims.put("role", user.getRole());
-
         Date now = new Date();
         Date expiry = new Date(now.getTime() + VALIDITY_IN_MS);
 
         return Jwts.builder()
-                .setClaims(claims)
+                .setSubject(user.getEmail())
+                .claim("role", user.getRole()) // USER / ADMIN
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -43,17 +39,17 @@ public class JwtTokenProvider {
     }
 
     /**
-     * Extract email from token
+     * Extract email
      */
     public String getEmailFromToken(String token) {
         return parseClaims(token).getSubject();
     }
 
     /**
-     * ✅ REQUIRED: Extract role from token
+     * Extract role (USER / ADMIN)
      */
     public String getRoleFromToken(String token) {
-        return (String) parseClaims(token).get("role");
+        return parseClaims(token).get("role", String.class);
     }
 
     /**
@@ -68,9 +64,6 @@ public class JwtTokenProvider {
         }
     }
 
-    /**
-     * Parse JWT claims
-     */
     private Claims parseClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)

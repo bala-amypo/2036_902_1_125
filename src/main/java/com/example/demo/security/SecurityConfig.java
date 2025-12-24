@@ -25,48 +25,32 @@ public class SecurityConfig {
         this.customUserDetailsService = customUserDetailsService;
     }
 
-    /**
-     * JWT Authentication Filter Bean
-     */
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService);
     }
 
-    /**
-     * Main Security Filter Chain
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            // ✅ Disable CSRF (JWT based stateless API)
             .csrf(csrf -> csrf.disable())
-
-            // ✅ Stateless session
             .sessionManagement(sm ->
                 sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-
-            // ✅ Authorization rules
             .authorizeHttpRequests(auth -> auth
-                // Public endpoints
                 .requestMatchers(
                         "/auth/**",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
-                        "/swagger-ui.html",
-                        "/hello-servlet"
+                        "/swagger-ui.html"
                 ).permitAll()
 
-                // 🔥 FINAL FIX — MATCH JWT EXACTLY
-                .requestMatchers("/api/**").hasAuthority("USER")
+                // ✅ CORRECT WAY
+                .requestMatchers("/api/**").hasRole("USER")
 
-                // Any other request
                 .anyRequest().authenticated()
             )
-
-            // ✅ JWT filter
             .addFilterBefore(
                 jwtAuthenticationFilter(),
                 UsernamePasswordAuthenticationFilter.class
@@ -75,18 +59,12 @@ public class SecurityConfig {
         return http.build();
     }
 
-    /**
-     * Authentication Manager
-     */
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
-    /**
-     * Password Encoder
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

@@ -32,45 +32,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        // ✅ Skip if already authenticated
-        if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         String header = request.getHeader("Authorization");
 
         if (header != null && header.startsWith("Bearer ")) {
 
             String token = header.substring(7);
 
-            try {
-                if (jwtTokenProvider.validateToken(token)) {
+            if (jwtTokenProvider.validateToken(token)) {
 
-                    String email = jwtTokenProvider.getEmailFromToken(token);
-                    String role = jwtTokenProvider.getRoleFromToken(token);
+                String email = jwtTokenProvider.getEmailFromToken(token);
+                String role = jwtTokenProvider.getRoleFromToken(token); // USER / ADMIN
 
-                    UserDetails userDetails =
-                            customUserDetailsService.loadUserByUsername(email);
+                UserDetails userDetails =
+                        customUserDetailsService.loadUserByUsername(email);
 
-                    // ✅ Map JWT role to Spring Security authority
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(
-                                    userDetails,
-                                    null,
-                                    List.of(new SimpleGrantedAuthority(role))
-                            );
+                // ✅ IMPORTANT: Prefix ROLE_
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                List.of(new SimpleGrantedAuthority("ROLE_" + role))
+                        );
 
-                    authentication.setDetails(
-                            new WebAuthenticationDetailsSource().buildDetails(request)
-                    );
+                authentication.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
 
-                    SecurityContextHolder.getContext()
-                            .setAuthentication(authentication);
-                }
-            } catch (Exception e) {
-                // ❌ Invalid token → ignore and continue
-                SecurityContextHolder.clearContext();
+                SecurityContextHolder.getContext()
+                        .setAuthentication(authentication);
             }
         }
 
