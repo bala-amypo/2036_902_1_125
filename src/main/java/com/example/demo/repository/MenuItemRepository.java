@@ -1,11 +1,12 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.MenuItem;
-import org.springframework.data.jpa.repository.*;
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 
-    @Query("SELECT DISTINCT m FROM MenuItem m LEFT JOIN FETCH m.categories WHERE m.active = true")
-    List<MenuItem> findAllActiveWithCategories();
+    // REQUIRED BY TESTS
+    Optional<MenuItem> findByNameIgnoreCase(String name);
 }
