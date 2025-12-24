@@ -9,11 +9,14 @@ import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.repository.RecipeIngredientRepository;
 import com.example.demo.service.MenuItemService;
 
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class MenuItemServiceImpl implements MenuItemService {
 
     private final MenuItemRepository menuItemRepository;
@@ -30,41 +33,48 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     public MenuItem createMenuItem(MenuItem item) {
-        if (item.getSellingPrice() == null ||
-            item.getSellingPrice().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BadRequestException("Selling price must be greater than zero");
-        }
 
         menuItemRepository.findByNameIgnoreCase(item.getName())
-                .ifPresent(m -> { throw new BadRequestException("Menu item already exists"); });
+                .ifPresent(m -> {
+                    throw new BadRequestException("Menu item already exists");
+                });
 
-        Set<Category> validCategories = new HashSet<>();
-        for (Category c : item.getCategories()) {
-            Category dbCat = categoryRepository.findById(c.getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-            if (!dbCat.getActive()) {
-                throw new BadRequestException("Category inactive");
-            }
-            validCategories.add(dbCat);
+        if (item.getSellingPrice() == null ||
+                item.getSellingPrice().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("Invalid selling price");
         }
 
-        item.setCategories(validCategories);
+        if (item.getCategories() != null && !item.getCategories().isEmpty()) {
+            Set<Category> validCategories = new HashSet<>();
+            for (Category c : item.getCategories()) {
+                Category category = categoryRepository.findById(c.getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+                if (!category.getActive()) {
+                    throw new BadRequestException("Inactive category");
+                }
+                validCategories.add(category);
+            }
+            item.setCategories(validCategories);
+        }
+
         return menuItemRepository.save(item);
     }
 
     @Override
-    public MenuItem updateMenuItem(Long id, MenuItem item) {
-        MenuItem existing = getMenuItemById(id);
+    public MenuItem updateMenuItem(Long id, MenuItem updated) {
 
-        if (item.getActive() != null && item.getActive()) {
-            if (!recipeIngredientRepository.existsByMenuItemId(id)) {
-                throw new BadRequestException("Menu item cannot be active without recipe ingredients");
-            }
+        MenuItem existing = menuItemRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
+
+        if (Boolean.TRUE.equals(updated.getActive()) &&
+                !recipeIngredientRepository.existsByMenuItemId(id)) {
+            throw new BadRequestException("Menu item must have recipe ingredients");
         }
 
-        existing.setName(item.getName());
-        existing.setSellingPrice(item.getSellingPrice());
-        existing.setActive(item.getActive());
+        existing.setName(updated.getName());
+        existing.setDescription(updated.getDescription());
+        existing.setSellingPrice(updated.getSellingPrice());
+        existing.setActive(updated.getActive());
 
         return menuItemRepository.save(existing);
     }
