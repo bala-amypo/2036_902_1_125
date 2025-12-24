@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "auth-controller")
-@SecurityRequirement(name = "")   // keeps auth controller visible in Swagger
+@SecurityRequirement(name = "")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -32,9 +32,10 @@ public class AuthController {
         this.userService = userService;
     }
 
+    // ✅ CHANGED TO 200 OK
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.status(201).body(userService.register(request));
+        return ResponseEntity.ok(userService.register(request));
     }
 
     @PostMapping("/login")
@@ -47,7 +48,6 @@ public class AuthController {
         );
 
         User user = userService.login(request);
-
         String token = jwtTokenProvider.generateToken(authentication, user);
 
         return new AuthResponse(
