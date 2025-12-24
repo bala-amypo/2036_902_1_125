@@ -1,11 +1,9 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = "ingredients")
 public class Ingredient {
 
     @Id
@@ -14,34 +12,44 @@ public class Ingredient {
 
     private String name;
     private String unit;
-    private BigDecimal costPerUnit;
-    private Boolean active = true;
+    private double costPerUnit;
+    private boolean active = true;
 
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    public Ingredient() {}
 
-    @PrePersist
-    void create() {
-        createdAt = new Timestamp(System.currentTimeMillis());
+    public Long getId() {
+        return id;
     }
 
-    @PreUpdate
-    void update() {
-        updatedAt = new Timestamp(System.currentTimeMillis());
+    public String getName() {
+        return name;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getUnit() {
+        return unit;
+    }
 
-    public String getUnit() { return unit; }
-    public void setUnit(String unit) { this.unit = unit; }
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
-    public BigDecimal getCostPerUnit() { return costPerUnit; }
-    public void setCostPerUnit(BigDecimal costPerUnit) { this.costPerUnit = costPerUnit; }
+    public double getCostPerUnit() {
+        return costPerUnit;
+    }
 
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    public void setCostPerUnit(double costPerUnit) {
+        this.costPerUnit = costPerUnit;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

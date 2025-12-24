@@ -1,11 +1,9 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Table(name = "category", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = "categories")
 public class Category {
 
     @Id
@@ -14,10 +12,9 @@ public class Category {
 
     private String name;
     private String description;
-    private Boolean active = true;
+    private boolean active = true;
 
-    @ManyToMany(mappedBy = "categories")
-    private Set<MenuItem> menuItems = new HashSet<>();
+    public Category() {}
 
     public Long getId() {
         return id;
@@ -39,11 +36,11 @@ public class Category {
         this.description = description;
     }
 
-    public Boolean getActive() {
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 }
