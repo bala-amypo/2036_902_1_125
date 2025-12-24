@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "profit_calculations")
+@Table(name = "profit_calculation_record")
 public class ProfitCalculationRecord {
 
     @Id
