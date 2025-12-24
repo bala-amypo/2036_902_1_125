@@ -31,11 +31,7 @@ public class SecurityConfig {
         return new ProviderManager(provider);
     }
 
-    // ✅ ADD THIS BEAN
-    @Bean
-    public JwtTokenProvider jwtTokenProvider() {
-        return new JwtTokenProvider("secret-key", 3600000);
-    }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
