@@ -36,4 +36,8 @@ public class ProfitCalculationRecord {
     public void setProfitMargin(BigDecimal profitMargin) { this.profitMargin = profitMargin; }
 
     public Timestamp getCalculatedAt() { return calculatedAt; }
+    public void setCalculatedAt(LocalDateTime calculatedAt) {
+    this.calculatedAt = calculatedAt;
+}
+
 }
