@@ -31,6 +31,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         this.categoryRepository = categoryRepository;
     }
 
+    // ================= CREATE =================
     @Override
     public MenuItem createMenuItem(MenuItem item) {
 
@@ -60,25 +61,57 @@ public class MenuItemServiceImpl implements MenuItemService {
         return menuItemRepository.save(item);
     }
 
+    // ================= UPDATE (PARTIAL SAFE UPDATE) =================
     @Override
     public MenuItem updateMenuItem(Long id, MenuItem updated) {
 
         MenuItem existing = menuItemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
 
+        // 🔒 Business rule: activating requires recipe
         if (Boolean.TRUE.equals(updated.getActive()) &&
                 !recipeIngredientRepository.existsByMenuItemId(id)) {
             throw new BadRequestException("Menu item must have recipe ingredients");
         }
 
-        existing.setName(updated.getName());
-        existing.setDescription(updated.getDescription());
-        existing.setSellingPrice(updated.getSellingPrice());
-        existing.setActive(updated.getActive());
+        // ✅ Update ONLY fields provided
+
+        if (updated.getName() != null && !updated.getName().isBlank()) {
+            existing.setName(updated.getName());
+        }
+
+        if (updated.getDescription() != null) {
+            existing.setDescription(updated.getDescription());
+        }
+
+        if (updated.getSellingPrice() != null) {
+            if (updated.getSellingPrice().compareTo(BigDecimal.ZERO) <= 0) {
+                throw new BadRequestException("Invalid selling price");
+            }
+            existing.setSellingPrice(updated.getSellingPrice());
+        }
+
+        if (updated.getActive() != null) {
+            existing.setActive(updated.getActive());
+        }
+
+        if (updated.getCategories() != null && !updated.getCategories().isEmpty()) {
+            Set<Category> validCategories = new HashSet<>();
+            for (Category c : updated.getCategories()) {
+                Category category = categoryRepository.findById(c.getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+                if (!category.getActive()) {
+                    throw new BadRequestException("Inactive category");
+                }
+                validCategories.add(category);
+            }
+            existing.setCategories(validCategories);
+        }
 
         return menuItemRepository.save(existing);
     }
 
+    // ================= READ =================
     @Override
     public MenuItem getMenuItemById(Long id) {
         return menuItemRepository.findById(id)
@@ -90,6 +123,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         return menuItemRepository.findAll();
     }
 
+    // ================= DEACTIVATE =================
     @Override
     public void deactivateMenuItem(Long id) {
         MenuItem item = getMenuItemById(id);
