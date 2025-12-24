@@ -46,8 +46,8 @@ public class SecurityConfig {
                         "/swagger-ui.html"
                 ).permitAll()
 
-                // 🔥 FINAL FIX
-                .requestMatchers("/api/**").hasAnyRole("USER", "ADMIN")
+                // ✅ FIXED HERE
+                .requestMatchers("/api/**").hasAuthority("USER")
 
                 .anyRequest().authenticated()
             )
