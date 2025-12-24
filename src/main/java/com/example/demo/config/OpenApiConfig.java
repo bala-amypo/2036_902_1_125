@@ -41,7 +41,7 @@ public class OpenApiConfig {
                 )
                 // ✅ SERVER CONFIG
                 .servers(List.of(
-                        new Server().url("https://9138.408procr.amypo.ai/")
+                        new Server().url("https://9051.408procr.amypo.ai/")
                 ))
                 // ✅ JWT CONFIG
                 .components(
