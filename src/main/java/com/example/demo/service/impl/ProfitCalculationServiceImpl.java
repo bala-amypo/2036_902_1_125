@@ -23,6 +23,20 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
     private final MenuItemRepository menuItemRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final ProfitCalculationRecordRepository recordRepository;
+    
+    // 🔴 TEST COMPATIBILITY CONSTRUCTOR (DO NOT REMOVE)
+public ProfitCalculationServiceImpl(
+        IngredientRepository ingredientRepository,
+        MenuItemRepository menuItemRepository,
+        RecipeIngredientRepository recipeIngredientRepository,
+        ProfitCalculationRecordRepository recordRepository
+) {
+    this.menuItemRepository = menuItemRepository;
+    this.ingredientRepository = ingredientRepository;
+    this.recipeIngredientRepository = recipeIngredientRepository;
+    this.recordRepository = recordRepository;
+}
+
 
 // ✅ EXACT ORDER REQUIRED BY TEST
 public ProfitCalculationServiceImpl(
