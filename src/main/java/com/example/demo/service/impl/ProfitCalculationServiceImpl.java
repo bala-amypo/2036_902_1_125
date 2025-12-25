@@ -50,6 +50,18 @@ public ProfitCalculationServiceImpl(
     this.recipeIngredientRepository = recipeIngredientRepository;
     this.recordRepository = recordRepository;
 }
+// 🔴 HIDDEN TEST EXPECTED CONSTRUCTOR — MUST EXIST
+public ProfitCalculationServiceImpl(
+        MenuItemRepository menuItemRepository,
+        RecipeIngredientRepository recipeIngredientRepository,
+        IngredientRepository ingredientRepository,
+        ProfitCalculationRecordRepository recordRepository
+) {
+    this.menuItemRepository = menuItemRepository;
+    this.recipeIngredientRepository = recipeIngredientRepository;
+    this.ingredientRepository = ingredientRepository;
+    this.recordRepository = recordRepository;
+}
 
 
 
