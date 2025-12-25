@@ -11,6 +11,8 @@ public interface RecipeIngredientRepository
 
     // ✅ REQUIRED by services & profit calculation
     List<RecipeIngredient> findByMenuItemId(Long menuItemId);
+    List<RecipeIngredient> findByIngredientId(Long ingredientId);
+
 
     // ✅ REQUIRED by MenuItemService
     boolean existsByMenuItemId(Long menuItemId);
