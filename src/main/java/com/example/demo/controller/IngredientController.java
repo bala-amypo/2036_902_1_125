@@ -16,34 +16,29 @@ public class IngredientController {
         this.service = service;
     }
 
-    // ✅ CREATE → 200 OK
     @PostMapping
-    public Ingredient create(@RequestBody Ingredient ingredient) {
-        return service.create(ingredient);
+    public Ingredient createIngredient(@RequestBody Ingredient ingredient) {
+        return service.createIngredient(ingredient);
     }
 
-    // ✅ GET ALL
     @GetMapping
-    public List<Ingredient> getAll() {
-        return service.getAll();
+    public List<Ingredient> getAllIngredients() {
+        return service.getAllIngredients();
     }
 
-    // ✅ GET BY ID
     @GetMapping("/{id}")
-    public Ingredient getById(@PathVariable Long id) {
-        return service.getById(id);
+    public Ingredient getIngredientById(@PathVariable long id) {
+        return service.getIngredientById(id);
     }
 
-    // ✅ SAFE UPDATE (NO NULL OVERWRITE)
     @PutMapping("/{id}")
-    public Ingredient update(@PathVariable Long id,
-                             @RequestBody Ingredient ingredient) {
-        return service.update(id, ingredient);
+    public Ingredient updateIngredient(@PathVariable long id,
+                                       @RequestBody Ingredient ingredient) {
+        return service.updateIngredient(id, ingredient);
     }
 
-    // ✅ DEACTIVATE
     @PutMapping("/{id}/deactivate")
-    public void deactivate(@PathVariable Long id) {
-        service.deactivate(id);
+    public void deactivateIngredient(@PathVariable long id) {
+        service.deactivateIngredient(id);
     }
 }

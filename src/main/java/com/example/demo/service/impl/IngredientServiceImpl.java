@@ -5,84 +5,58 @@ import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.IngredientRepository;
 import com.example.demo.service.IngredientService;
-
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 public class IngredientServiceImpl implements IngredientService {
 
-    private final IngredientRepository repository;
+    private final IngredientRepository repo;
 
-    public IngredientServiceImpl(IngredientRepository repository) {
-        this.repository = repository;
+    public IngredientServiceImpl(IngredientRepository repo) {
+        this.repo = repo;
     }
 
-    // ================= CREATE =================
     @Override
-    public Ingredient create(Ingredient ingredient) {
-
-        repository.findByNameIgnoreCase(ingredient.getName())
-                .ifPresent(i -> {
-                    throw new BadRequestException("Ingredient already exists");
-                });
-
-        if (ingredient.getCostPerUnit() == null ||
-                ingredient.getCostPerUnit().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BadRequestException("Invalid cost per unit");
+    public Ingredient createIngredient(Ingredient ingredient) {
+        if (ingredient.getName() == null || ingredient.getCostPerUnit() == null) {
+            throw new BadRequestException("Invalid ingredient");
         }
-
-        return repository.save(ingredient);
+        return repo.save(ingredient);
     }
 
-    // ================= UPDATE (SAFE PARTIAL) =================
     @Override
-    public Ingredient update(Long id, Ingredient updated) {
+    public Ingredient updateIngredient(long id, Ingredient updated) {
+        Ingredient existing = getIngredientById(id);
 
-        Ingredient existing = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
-
-        if (updated.getName() != null && !updated.getName().isBlank()) {
+        if (updated.getName() != null)
             existing.setName(updated.getName());
-        }
 
-        if (updated.getUnit() != null) {
+        if (updated.getUnit() != null)
             existing.setUnit(updated.getUnit());
-        }
 
-        if (updated.getCostPerUnit() != null) {
-            if (updated.getCostPerUnit().compareTo(BigDecimal.ZERO) <= 0) {
-                throw new BadRequestException("Invalid cost per unit");
-            }
+        if (updated.getCostPerUnit() != null)
             existing.setCostPerUnit(updated.getCostPerUnit());
-        }
 
-        if (updated.getActive() != null) {
-            existing.setActive(updated.getActive());
-        }
-
-        return repository.save(existing);
+        return repo.save(existing);
     }
 
-    // ================= READ =================
     @Override
-    public Ingredient getById(Long id) {
-        return repository.findById(id)
+    public Ingredient getIngredientById(long id) {
+        return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
     }
 
     @Override
-    public List<Ingredient> getAll() {
-        return repository.findAll();
+    public List<Ingredient> getAllIngredients() {
+        return repo.findAll();
     }
 
-    // ================= DEACTIVATE =================
     @Override
-    public void deactivate(Long id) {
-        Ingredient ingredient = getById(id);
+    public void deactivateIngredient(long id) {
+        Ingredient ingredient = getIngredientById(id);
         ingredient.setActive(false);
-        repository.save(ingredient);
+        repo.save(ingredient);
     }
 }

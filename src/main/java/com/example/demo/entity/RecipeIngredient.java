@@ -10,17 +10,14 @@ public class RecipeIngredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private MenuItem menuItem;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Ingredient ingredient;
 
     private Double quantityRequired;
 
-    public RecipeIngredient() {}
-
-    // getters & setters
     public Long getId() { return id; }
     public MenuItem getMenuItem() { return menuItem; }
     public Ingredient getIngredient() { return ingredient; }
@@ -30,4 +27,9 @@ public class RecipeIngredient {
     public void setMenuItem(MenuItem menuItem) { this.menuItem = menuItem; }
     public void setIngredient(Ingredient ingredient) { this.ingredient = ingredient; }
     public void setQuantityRequired(Double quantityRequired) { this.quantityRequired = quantityRequired; }
+
+    // 🔥 REQUIRED BY TESTS
+    public void setQuantity(double quantity) {
+        this.quantityRequired = quantity;
+    }
 }
