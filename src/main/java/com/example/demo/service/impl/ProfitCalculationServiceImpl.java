@@ -19,64 +19,22 @@ import java.util.List;
 @Service
 public class ProfitCalculationServiceImpl implements ProfitCalculationService {
 
-    private final IngredientRepository ingredientRepository;
     private final MenuItemRepository menuItemRepository;
+    private final IngredientRepository ingredientRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final ProfitCalculationRecordRepository recordRepository;
-    
-    // 🔴 TEST COMPATIBILITY CONSTRUCTOR (DO NOT REMOVE)
-public ProfitCalculationServiceImpl(
-        IngredientRepository ingredientRepository,
-        MenuItemRepository menuItemRepository,
-        RecipeIngredientRepository recipeIngredientRepository,
-        ProfitCalculationRecordRepository recordRepository
-) {
-    this.menuItemRepository = menuItemRepository;
-    this.ingredientRepository = ingredientRepository;
-    this.recipeIngredientRepository = recipeIngredientRepository;
-    this.recordRepository = recordRepository;
-}
 
-
-// ✅ EXACT ORDER REQUIRED BY TEST
-public ProfitCalculationServiceImpl(
-        MenuItemRepository menuItemRepository,
-        IngredientRepository ingredientRepository,
-        RecipeIngredientRepository recipeIngredientRepository,
-        ProfitCalculationRecordRepository recordRepository
-) {
-    this.menuItemRepository = menuItemRepository;
-    this.ingredientRepository = ingredientRepository;
-    this.recipeIngredientRepository = recipeIngredientRepository;
-    this.recordRepository = recordRepository;
-}
-// 🔴 HIDDEN TEST EXPECTED CONSTRUCTOR — MUST EXIST
-public ProfitCalculationServiceImpl(
-        MenuItemRepository menuItemRepository,
-        RecipeIngredientRepository recipeIngredientRepository,
-        IngredientRepository ingredientRepository,
-        ProfitCalculationRecordRepository recordRepository
-) {
-    this.menuItemRepository = menuItemRepository;
-    this.recipeIngredientRepository = recipeIngredientRepository;
-    this.ingredientRepository = ingredientRepository;
-    this.recordRepository = recordRepository;
-}
-// 🔴 FINAL HIDDEN-TEST CONSTRUCTOR (ABSOLUTELY REQUIRED)
-public ProfitCalculationServiceImpl(
-        IngredientRepository ingredientRepository,
-        RecipeIngredientRepository recipeIngredientRepository,
-        MenuItemRepository menuItemRepository,
-        ProfitCalculationRecordRepository recordRepository
-) {
-    this.ingredientRepository = ingredientRepository;
-    this.recipeIngredientRepository = recipeIngredientRepository;
-    this.menuItemRepository = menuItemRepository;
-    this.recordRepository = recordRepository;
-}
-
-
-
+    public ProfitCalculationServiceImpl(
+            MenuItemRepository menuItemRepository,
+            IngredientRepository ingredientRepository,
+            RecipeIngredientRepository recipeIngredientRepository,
+            ProfitCalculationRecordRepository recordRepository
+    ) {
+        this.menuItemRepository = menuItemRepository;
+        this.ingredientRepository = ingredientRepository;
+        this.recipeIngredientRepository = recipeIngredientRepository;
+        this.recordRepository = recordRepository;
+    }
 
     @Override
     public ProfitCalculationRecord calculateProfit(Long menuItemId) {
