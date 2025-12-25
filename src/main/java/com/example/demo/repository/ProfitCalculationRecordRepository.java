@@ -5,19 +5,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 public interface ProfitCalculationRecordRepository
         extends JpaRepository<ProfitCalculationRecord, Long> {
 
     List<ProfitCalculationRecord> findByMenuItemId(Long menuItemId);
 
     List<ProfitCalculationRecord>
-        findByProfitMarginBetween(BigDecimal min, BigDecimal max);
-        List<ProfitCalculationRecord>
-findByProfitMarginGreaterThanEqual(java.math.BigDecimal min);
+            findByProfitMarginBetween(BigDecimal min, BigDecimal max);
 
-
-    // ✅ REQUIRED BY TESTS
+    // ✅ KEEP ONLY ONE
     List<ProfitCalculationRecord>
-        findByProfitMarginGreaterThanEqual(BigDecimal value);
+            findByProfitMarginGreaterThanEqual(BigDecimal min);
 }
-
