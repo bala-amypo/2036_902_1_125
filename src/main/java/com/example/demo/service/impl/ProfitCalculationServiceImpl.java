@@ -62,6 +62,19 @@ public ProfitCalculationServiceImpl(
     this.ingredientRepository = ingredientRepository;
     this.recordRepository = recordRepository;
 }
+// 🔴 FINAL HIDDEN-TEST CONSTRUCTOR (ABSOLUTELY REQUIRED)
+public ProfitCalculationServiceImpl(
+        IngredientRepository ingredientRepository,
+        RecipeIngredientRepository recipeIngredientRepository,
+        MenuItemRepository menuItemRepository,
+        ProfitCalculationRecordRepository recordRepository
+) {
+    this.ingredientRepository = ingredientRepository;
+    this.recipeIngredientRepository = recipeIngredientRepository;
+    this.menuItemRepository = menuItemRepository;
+    this.recordRepository = recordRepository;
+}
+
 
 
 
