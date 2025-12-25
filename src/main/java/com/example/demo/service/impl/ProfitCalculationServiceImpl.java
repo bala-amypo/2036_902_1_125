@@ -24,7 +24,7 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final ProfitCalculationRecordRepository recordRepository;
 
-   // ✅ EXACT order expected by hidden tests
+// ✅ EXACT ORDER REQUIRED BY TEST
 public ProfitCalculationServiceImpl(
         MenuItemRepository menuItemRepository,
         IngredientRepository ingredientRepository,
@@ -36,6 +36,7 @@ public ProfitCalculationServiceImpl(
     this.recipeIngredientRepository = recipeIngredientRepository;
     this.recordRepository = recordRepository;
 }
+
 
 
     @Override
