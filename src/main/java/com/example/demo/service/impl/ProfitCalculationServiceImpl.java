@@ -11,6 +11,7 @@ import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.repository.ProfitCalculationRecordRepository;
 import com.example.demo.repository.RecipeIngredientRepository;
 import com.example.demo.service.ProfitCalculationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -24,7 +25,8 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final ProfitCalculationRecordRepository recordRepository;
 
-    // ✅ ORDER 1 (Spring typical)
+    // ✅ SPRING RUNTIME CONSTRUCTOR (ONLY ONE AUTOWIRED)
+    @Autowired
     public ProfitCalculationServiceImpl(
             MenuItemRepository menuItemRepository,
             IngredientRepository ingredientRepository,
@@ -37,7 +39,7 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
         this.recordRepository = recordRepository;
     }
 
-    // ✅ ORDER 2 (Test constructor – REQUIRED)
+    // ✅ TEST CONSTRUCTOR (DO NOT AUTOWIRE)
     public ProfitCalculationServiceImpl(
             IngredientRepository ingredientRepository,
             RecipeIngredientRepository recipeIngredientRepository,
@@ -50,7 +52,7 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
         this.recordRepository = recordRepository;
     }
 
-    // ✅ ORDER 3 (Alternative test variant)
+    // ✅ TEST CONSTRUCTOR (ALTERNATE ORDER)
     public ProfitCalculationServiceImpl(
             MenuItemRepository menuItemRepository,
             RecipeIngredientRepository recipeIngredientRepository,
