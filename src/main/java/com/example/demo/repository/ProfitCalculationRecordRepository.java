@@ -12,6 +12,9 @@ public interface ProfitCalculationRecordRepository
 
     List<ProfitCalculationRecord>
         findByProfitMarginBetween(BigDecimal min, BigDecimal max);
+        List<ProfitCalculationRecord>
+findByProfitMarginGreaterThanEqual(java.math.BigDecimal min);
+
 
     // ✅ REQUIRED BY TESTS
     List<ProfitCalculationRecord>

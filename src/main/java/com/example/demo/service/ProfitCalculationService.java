@@ -12,15 +12,9 @@ public interface ProfitCalculationService {
     List<ProfitCalculationRecord> getCalculationsForMenuItem(Long menuItemId);
 
     List<ProfitCalculationRecord> getAllCalculations();
-    public List<ProfitCalculationRecord>
-findRecordsWithMarginGreaterThanEqual(double value) {
-
-    return recordRepository.findByProfitMarginGreaterThanEqual(
-            BigDecimal.valueOf(value)
-    );
-}
-
 
     // ✅ REQUIRED BY TESTS
     List<ProfitCalculationRecord> findRecordsWithMarginBetween(double min, double max);
+
+    List<ProfitCalculationRecord> findRecordsWithMarginGreaterThanEqual(double min);
 }

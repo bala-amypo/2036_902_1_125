@@ -99,5 +99,14 @@ findRecordsWithMarginBetween(double min, double max) {
             BigDecimal.valueOf(max)
     );
 }
+@Override
+public List<ProfitCalculationRecord>
+findRecordsWithMarginGreaterThanEqual(double min) {
+
+    return recordRepository.findByProfitMarginGreaterThanEqual(
+            java.math.BigDecimal.valueOf(min)
+    );
+}
+
 
 }
