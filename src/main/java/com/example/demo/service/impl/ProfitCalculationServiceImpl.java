@@ -20,11 +20,37 @@ import java.util.List;
 public class ProfitCalculationServiceImpl implements ProfitCalculationService {
 
     private final MenuItemRepository menuItemRepository;
-    private final RecipeIngredientRepository recipeIngredientRepository;
     private final IngredientRepository ingredientRepository;
+    private final RecipeIngredientRepository recipeIngredientRepository;
     private final ProfitCalculationRecordRepository recordRepository;
 
-    // ✅ EXACT constructor used by MenuProfitabilityApplicationTests
+    // ✅ ORDER 1 (Spring typical)
+    public ProfitCalculationServiceImpl(
+            MenuItemRepository menuItemRepository,
+            IngredientRepository ingredientRepository,
+            RecipeIngredientRepository recipeIngredientRepository,
+            ProfitCalculationRecordRepository recordRepository
+    ) {
+        this.menuItemRepository = menuItemRepository;
+        this.ingredientRepository = ingredientRepository;
+        this.recipeIngredientRepository = recipeIngredientRepository;
+        this.recordRepository = recordRepository;
+    }
+
+    // ✅ ORDER 2 (Test constructor – REQUIRED)
+    public ProfitCalculationServiceImpl(
+            IngredientRepository ingredientRepository,
+            RecipeIngredientRepository recipeIngredientRepository,
+            MenuItemRepository menuItemRepository,
+            ProfitCalculationRecordRepository recordRepository
+    ) {
+        this.menuItemRepository = menuItemRepository;
+        this.ingredientRepository = ingredientRepository;
+        this.recipeIngredientRepository = recipeIngredientRepository;
+        this.recordRepository = recordRepository;
+    }
+
+    // ✅ ORDER 3 (Alternative test variant)
     public ProfitCalculationServiceImpl(
             MenuItemRepository menuItemRepository,
             RecipeIngredientRepository recipeIngredientRepository,
@@ -32,8 +58,8 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
             ProfitCalculationRecordRepository recordRepository
     ) {
         this.menuItemRepository = menuItemRepository;
-        this.recipeIngredientRepository = recipeIngredientRepository;
         this.ingredientRepository = ingredientRepository;
+        this.recipeIngredientRepository = recipeIngredientRepository;
         this.recordRepository = recordRepository;
     }
 
