@@ -25,7 +25,7 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final ProfitCalculationRecordRepository recordRepository;
 
-    // ✅ SPRING RUNTIME CONSTRUCTOR (ONLY ONE AUTOWIRED)
+    // ✅ SPRING BOOT CONSTRUCTOR
     @Autowired
     public ProfitCalculationServiceImpl(
             MenuItemRepository menuItemRepository,
@@ -39,20 +39,7 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
         this.recordRepository = recordRepository;
     }
 
-    // ✅ TEST CONSTRUCTOR (DO NOT AUTOWIRE)
-    public ProfitCalculationServiceImpl(
-            IngredientRepository ingredientRepository,
-            RecipeIngredientRepository recipeIngredientRepository,
-            MenuItemRepository menuItemRepository,
-            ProfitCalculationRecordRepository recordRepository
-    ) {
-        this.menuItemRepository = menuItemRepository;
-        this.ingredientRepository = ingredientRepository;
-        this.recipeIngredientRepository = recipeIngredientRepository;
-        this.recordRepository = recordRepository;
-    }
-
-    // ✅ TEST CONSTRUCTOR (ALTERNATE ORDER)
+    // ✅ EXACT CONSTRUCTOR REQUIRED BY TEST (THIS WAS MISSING)
     public ProfitCalculationServiceImpl(
             MenuItemRepository menuItemRepository,
             RecipeIngredientRepository recipeIngredientRepository,
@@ -60,8 +47,8 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
             ProfitCalculationRecordRepository recordRepository
     ) {
         this.menuItemRepository = menuItemRepository;
-        this.ingredientRepository = ingredientRepository;
         this.recipeIngredientRepository = recipeIngredientRepository;
+        this.ingredientRepository = ingredientRepository;
         this.recordRepository = recordRepository;
     }
 
