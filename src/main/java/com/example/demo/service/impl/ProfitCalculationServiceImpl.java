@@ -26,16 +26,17 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
     private final ProfitCalculationRecordRepository recordRepository;
 
    public ProfitCalculationServiceImpl(
-        IngredientRepository ingredientRepository,
         MenuItemRepository menuItemRepository,
+        IngredientRepository ingredientRepository,
         RecipeIngredientRepository recipeIngredientRepository,
-        ProfitCalculationRecordRepository recordRepository) {
-
-    this.ingredientRepository = ingredientRepository;
+        ProfitCalculationRecordRepository recordRepository
+) {
     this.menuItemRepository = menuItemRepository;
+    this.ingredientRepository = ingredientRepository;
     this.recipeIngredientRepository = recipeIngredientRepository;
     this.recordRepository = recordRepository;
 }
+
 
 
     @Override
