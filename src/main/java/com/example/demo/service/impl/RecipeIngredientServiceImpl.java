@@ -12,27 +12,33 @@ import java.util.List;
 public class RecipeIngredientServiceImpl implements RecipeIngredientService {
 
     private final RecipeIngredientRepository repo;
-    private final MenuItemRepository menuRepo;
+    private final MenuItemRepository menuItemRepo;
     private final IngredientRepository ingredientRepo;
 
-    public RecipeIngredientServiceImpl(RecipeIngredientRepository repo,
-                                       MenuItemRepository menuRepo,
-                                       IngredientRepository ingredientRepo) {
+    public RecipeIngredientServiceImpl(
+            RecipeIngredientRepository repo,
+            MenuItemRepository menuItemRepo,
+            IngredientRepository ingredientRepo) {
+
         this.repo = repo;
-        this.menuRepo = menuRepo;
+        this.menuItemRepo = menuItemRepo;
         this.ingredientRepo = ingredientRepo;
     }
 
+    // 🔹 CONTROLLER ENTRY
     @Override
-    public RecipeIngredient addIngredientToRecipe(Long menuItemId,
-                                                  Long ingredientId,
-                                                  Double quantity) {
+    public RecipeIngredient addIngredientToRecipe(
+            Long menuItemId,
+            Long ingredientId,
+            Double quantity) {
 
-        MenuItem menuItem = menuRepo.findById(menuItemId)
-                .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
+        MenuItem menuItem = menuItemRepo.findById(menuItemId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("MenuItem not found"));
 
         Ingredient ingredient = ingredientRepo.findById(ingredientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Ingredient not found"));
 
         RecipeIngredient ri = new RecipeIngredient();
         ri.setMenuItem(menuItem);
@@ -42,27 +48,40 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
         return repo.save(ri);
     }
 
+    // 🔹 TEST ENTRY
     @Override
-    public RecipeIngredient updateRecipeIngredient(Long id, Double quantity) {
+    public RecipeIngredient addIngredientToMenuItem(
+            RecipeIngredient recipeIngredient) {
+
+        return repo.save(recipeIngredient);
+    }
+
+    @Override
+    public RecipeIngredient updateRecipeIngredient(long id, double quantity) {
+
         RecipeIngredient ri = repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Recipe ingredient not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("RecipeIngredient not found"));
+
         ri.setQuantityRequired(quantity);
         return repo.save(ri);
     }
 
     @Override
-    public List<RecipeIngredient> getIngredientsByMenuItem(Long menuItemId) {
+    public List<RecipeIngredient> getIngredientsByMenuItem(long menuItemId) {
         return repo.findByMenuItemId(menuItemId);
     }
 
     @Override
-    public void removeIngredientFromRecipe(Long id) {
+    public void removeIngredientFromRecipe(long id) {
         repo.deleteById(id);
     }
 
     @Override
-    public Double getTotalQuantityOfIngredient(Long ingredientId) {
-        return repo.findByIngredientId(ingredientId).stream()
+    public double getTotalQuantityOfIngredient(long ingredientId) {
+
+        return repo.findByIngredientId(ingredientId)
+                .stream()
                 .mapToDouble(RecipeIngredient::getQuantityRequired)
                 .sum();
     }
