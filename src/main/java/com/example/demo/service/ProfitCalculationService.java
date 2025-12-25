@@ -12,4 +12,7 @@ public interface ProfitCalculationService {
     List<ProfitCalculationRecord> getCalculationsForMenuItem(Long menuItemId);
 
     List<ProfitCalculationRecord> getAllCalculations();
+
+    // ✅ REQUIRED BY TESTS
+    List<ProfitCalculationRecord> findRecordsWithMarginBetween(double min, double max);
 }

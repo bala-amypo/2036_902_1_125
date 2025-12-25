@@ -86,4 +86,14 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
     public List<ProfitCalculationRecord> getAllCalculations() {
         return recordRepository.findAll();
     }
+    @Override
+public List<ProfitCalculationRecord>
+findRecordsWithMarginBetween(double min, double max) {
+
+    return recordRepository.findByProfitMarginBetween(
+            BigDecimal.valueOf(min),
+            BigDecimal.valueOf(max)
+    );
+}
+
 }
