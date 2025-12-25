@@ -11,7 +11,6 @@ import com.example.demo.repository.MenuItemRepository;
 import com.example.demo.repository.ProfitCalculationRecordRepository;
 import com.example.demo.repository.RecipeIngredientRepository;
 import com.example.demo.service.ProfitCalculationService;
-
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,25 +19,23 @@ import java.util.List;
 @Service
 public class ProfitCalculationServiceImpl implements ProfitCalculationService {
 
-    private final MenuItemRepository menuItemRepository;
-    private final RecipeIngredientRepository recipeIngredientRepository;
     private final IngredientRepository ingredientRepository;
+    private final RecipeIngredientRepository recipeIngredientRepository;
+    private final MenuItemRepository menuItemRepository;
     private final ProfitCalculationRecordRepository recordRepository;
 
-public ProfitCalculationServiceImpl(
-        MenuItemRepository menuItemRepository,
-        IngredientRepository ingredientRepository,
-        RecipeIngredientRepository recipeIngredientRepository,
-        ProfitCalculationRecordRepository recordRepository
-) {
-    this.menuItemRepository = menuItemRepository;
-    this.ingredientRepository = ingredientRepository;
-    this.recipeIngredientRepository = recipeIngredientRepository;
-    this.recordRepository = recordRepository;
-}
-
-
-
+    // ✅ DO NOT CHANGE ORDER – TEST DEPENDS ON THIS
+    public ProfitCalculationServiceImpl(
+            IngredientRepository ingredientRepository,
+            RecipeIngredientRepository recipeIngredientRepository,
+            MenuItemRepository menuItemRepository,
+            ProfitCalculationRecordRepository recordRepository
+    ) {
+        this.ingredientRepository = ingredientRepository;
+        this.recipeIngredientRepository = recipeIngredientRepository;
+        this.menuItemRepository = menuItemRepository;
+        this.recordRepository = recordRepository;
+    }
 
     @Override
     public ProfitCalculationRecord calculateProfit(Long menuItemId) {
@@ -56,18 +53,17 @@ public ProfitCalculationServiceImpl(
         BigDecimal totalCost = BigDecimal.ZERO;
 
         for (RecipeIngredient ri : ingredients) {
-            Ingredient ing = ingredientRepository.findById(ri.getIngredient().getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
+            Ingredient ingredient = ingredientRepository.findById(
+                    ri.getIngredient().getId()
+            ).orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
 
-           BigDecimal cost =
-        ing.getCostPerUnit()
-                .multiply(BigDecimal.valueOf(ri.getQuantityRequired()));
+            BigDecimal cost = ingredient.getCostPerUnit()
+                    .multiply(BigDecimal.valueOf(ri.getQuantityRequired()));
 
             totalCost = totalCost.add(cost);
         }
 
-        BigDecimal profitMargin =
-                menuItem.getSellingPrice().subtract(totalCost);
+        BigDecimal profitMargin = menuItem.getSellingPrice().subtract(totalCost);
 
         ProfitCalculationRecord record = new ProfitCalculationRecord();
         record.setMenuItem(menuItem);
@@ -92,23 +88,19 @@ public ProfitCalculationServiceImpl(
     public List<ProfitCalculationRecord> getAllCalculations() {
         return recordRepository.findAll();
     }
+
     @Override
-public List<ProfitCalculationRecord>
-findRecordsWithMarginBetween(double min, double max) {
+    public List<ProfitCalculationRecord> findRecordsWithMarginBetween(double min, double max) {
+        return recordRepository.findByProfitMarginBetween(
+                BigDecimal.valueOf(min),
+                BigDecimal.valueOf(max)
+        );
+    }
 
-    return recordRepository.findByProfitMarginBetween(
-            BigDecimal.valueOf(min),
-            BigDecimal.valueOf(max)
-    );
-}
-@Override
-public List<ProfitCalculationRecord>
-findRecordsWithMarginGreaterThanEqual(double min) {
-
-    return recordRepository.findByProfitMarginGreaterThanEqual(
-            java.math.BigDecimal.valueOf(min)
-    );
-}
-
-
+    @Override
+    public List<ProfitCalculationRecord> findRecordsWithMarginGreaterThanEqual(double min) {
+        return recordRepository.findByProfitMarginGreaterThanEqual(
+                BigDecimal.valueOf(min)
+        );
+    }
 }
