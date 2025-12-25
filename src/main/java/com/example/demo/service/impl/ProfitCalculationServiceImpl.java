@@ -20,33 +20,20 @@ import java.util.List;
 public class ProfitCalculationServiceImpl implements ProfitCalculationService {
 
     private final MenuItemRepository menuItemRepository;
-    private final IngredientRepository ingredientRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
+    private final IngredientRepository ingredientRepository;
     private final ProfitCalculationRecordRepository recordRepository;
 
-    // ✅ Constructor used by Spring
+    // ✅ EXACT constructor used by MenuProfitabilityApplicationTests
     public ProfitCalculationServiceImpl(
             MenuItemRepository menuItemRepository,
-            IngredientRepository ingredientRepository,
             RecipeIngredientRepository recipeIngredientRepository,
+            IngredientRepository ingredientRepository,
             ProfitCalculationRecordRepository recordRepository
     ) {
         this.menuItemRepository = menuItemRepository;
-        this.ingredientRepository = ingredientRepository;
         this.recipeIngredientRepository = recipeIngredientRepository;
-        this.recordRepository = recordRepository;
-    }
-
-    // 🔥 Constructor REQUIRED by MenuProfitabilityApplicationTests
-    public ProfitCalculationServiceImpl(
-            IngredientRepository ingredientRepository,
-            RecipeIngredientRepository recipeIngredientRepository,
-            MenuItemRepository menuItemRepository,
-            ProfitCalculationRecordRepository recordRepository
-    ) {
-        this.menuItemRepository = menuItemRepository;
         this.ingredientRepository = ingredientRepository;
-        this.recipeIngredientRepository = recipeIngredientRepository;
         this.recordRepository = recordRepository;
     }
 
