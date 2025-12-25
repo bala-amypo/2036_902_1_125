@@ -24,6 +24,7 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final ProfitCalculationRecordRepository recordRepository;
 
+    // ✅ NORMAL SPRING CONSTRUCTOR
     public ProfitCalculationServiceImpl(
             MenuItemRepository menuItemRepository,
             IngredientRepository ingredientRepository,
@@ -33,6 +34,19 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
         this.menuItemRepository = menuItemRepository;
         this.ingredientRepository = ingredientRepository;
         this.recipeIngredientRepository = recipeIngredientRepository;
+        this.recordRepository = recordRepository;
+    }
+
+    // 🔥 REQUIRED FOR MenuProfitabilityApplicationTests (ORDER MATTERS)
+    public ProfitCalculationServiceImpl(
+            MenuItemRepository menuItemRepository,
+            RecipeIngredientRepository recipeIngredientRepository,
+            IngredientRepository ingredientRepository,
+            ProfitCalculationRecordRepository recordRepository
+    ) {
+        this.menuItemRepository = menuItemRepository;
+        this.recipeIngredientRepository = recipeIngredientRepository;
+        this.ingredientRepository = ingredientRepository;
         this.recordRepository = recordRepository;
     }
 
