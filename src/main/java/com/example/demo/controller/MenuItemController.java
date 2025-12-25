@@ -11,35 +11,38 @@ import java.util.List;
 @RequestMapping("/api/menu-items")
 public class MenuItemController {
 
-    private final MenuItemService menuItemService;
+    private final MenuItemService service;
 
-    public MenuItemController(MenuItemService menuItemService) {
-        this.menuItemService = menuItemService;
+    public MenuItemController(MenuItemService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public ResponseEntity<MenuItem> create(@RequestBody MenuItem item) {
-        return ResponseEntity.ok(menuItemService.createMenuItem(item));
-    }
-
-    @GetMapping("/{id}")
-    public MenuItem getById(@PathVariable Long id) {
-        return menuItemService.getMenuItemById(id);
+    public ResponseEntity<MenuItem> createMenuItem(
+            @RequestBody MenuItem item) {
+        return ResponseEntity.ok(service.createMenuItem(item));
     }
 
     @GetMapping
-    public List<MenuItem> getAll() {
-        return menuItemService.getAllMenuItems();
+    public ResponseEntity<List<MenuItem>> getAllMenuItems() {
+        return ResponseEntity.ok(service.getAllMenuItems());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MenuItem> getMenuItemById(
+            @PathVariable long id) {
+        return ResponseEntity.ok(service.getMenuItemById(id));
     }
 
     @PutMapping("/{id}")
-    public MenuItem update(@PathVariable Long id,
-                           @RequestBody MenuItem item) {
-        return menuItemService.updateMenuItem(id, item);
+    public ResponseEntity<MenuItem> updateMenuItem(
+            @PathVariable long id,
+            @RequestBody MenuItem item) {
+        return ResponseEntity.ok(service.updateMenuItem(id, item));
     }
 
     @PutMapping("/{id}/deactivate")
-    public void deactivate(@PathVariable Long id) {
-        menuItemService.deactivateMenuItem(id);
+    public void deactivateMenuItem(@PathVariable long id) {
+        service.deactivateMenuItem(id);
     }
 }

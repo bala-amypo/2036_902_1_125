@@ -3,5 +3,10 @@ package com.example.demo.repository;
 import com.example.demo.entity.Ingredient;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
+import java.util.Optional;
+
+public interface IngredientRepository
+        extends JpaRepository<Ingredient, Long> {
+
+    Optional<Ingredient> findByNameIgnoreCase(String name);
 }

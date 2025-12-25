@@ -10,6 +10,9 @@ public interface ProfitCalculationRecordRepository
         extends JpaRepository<ProfitCalculationRecord, Long> {
 
     List<ProfitCalculationRecord> findByMenuItemId(Long menuItemId);
+    List<ProfitCalculationRecord>
+findByProfitMarginGreaterThanEqual(BigDecimal margin);
+
 
     // ✅ REQUIRED QUERY
     List<ProfitCalculationRecord>
