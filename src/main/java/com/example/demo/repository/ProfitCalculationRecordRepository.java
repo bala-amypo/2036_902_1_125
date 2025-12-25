@@ -1,11 +1,3 @@
-package com.example.demo.repository;
-
-import com.example.demo.entity.ProfitCalculationRecord;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.math.BigDecimal;
-import java.util.List;
-
 public interface ProfitCalculationRecordRepository
         extends JpaRepository<ProfitCalculationRecord, Long> {
 
@@ -14,7 +6,6 @@ public interface ProfitCalculationRecordRepository
     List<ProfitCalculationRecord>
             findByProfitMarginBetween(BigDecimal min, BigDecimal max);
 
-    // ✅ KEEP ONLY ONE
     List<ProfitCalculationRecord>
             findByProfitMarginGreaterThanEqual(BigDecimal min);
 }

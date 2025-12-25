@@ -59,7 +59,7 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
                     .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
 
            BigDecimal cost =
-        BigDecimal.valueOf(ing.getCostPerUnit())
+        ing.getCostPerUnit()
                 .multiply(BigDecimal.valueOf(ri.getQuantityRequired()));
 
             totalCost = totalCost.add(cost);

@@ -10,14 +10,14 @@ public class Ingredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     private String unit;
 
-    // ✅ MUST BE Double (tests expect this)
-    @Column(nullable = false)
-    private Double costPerUnit;
+    // ✅ CHANGE HERE
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal costPerUnit;
 
     private Boolean active = true;
 
@@ -26,12 +26,12 @@ public class Ingredient {
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getUnit() { return unit; }
-    public Double getCostPerUnit() { return costPerUnit; }
+    public BigDecimal getCostPerUnit() { return costPerUnit; }
     public Boolean getActive() { return active; }
 
     public void setId(Long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setUnit(String unit) { this.unit = unit; }
-    public void setCostPerUnit(Double costPerUnit) { this.costPerUnit = costPerUnit; }
+    public void setCostPerUnit(BigDecimal costPerUnit) { this.costPerUnit = costPerUnit; }
     public void setActive(Boolean active) { this.active = active; }
 }
