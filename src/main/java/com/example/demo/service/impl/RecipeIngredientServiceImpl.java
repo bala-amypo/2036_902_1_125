@@ -1,8 +1,12 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.*;
+import com.example.demo.entity.Ingredient;
+import com.example.demo.entity.MenuItem;
+import com.example.demo.entity.RecipeIngredient;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.*;
+import com.example.demo.repository.IngredientRepository;
+import com.example.demo.repository.MenuItemRepository;
+import com.example.demo.repository.RecipeIngredientRepository;
 import com.example.demo.service.RecipeIngredientService;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +29,12 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
         this.ingredientRepo = ingredientRepo;
     }
 
+    // ✅ REQUIRED BY TESTS
     @Override
-    public RecipeIngredient addIngredientToRecipe(
-            Long menuItemId,
-            Long ingredientId,
-            Double quantity) {
+    public RecipeIngredient addIngredientToMenuItem(RecipeIngredient ri) {
+
+        Long menuItemId = ri.getMenuItem().getId();
+        Long ingredientId = ri.getIngredient().getId();
 
         MenuItem menuItem = menuItemRepo.findById(menuItemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
@@ -37,16 +42,15 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
         Ingredient ingredient = ingredientRepo.findById(ingredientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
 
-        RecipeIngredient ri = new RecipeIngredient();
         ri.setMenuItem(menuItem);
         ri.setIngredient(ingredient);
-        ri.setQuantityRequired(quantity);
 
         return repo.save(ri);
     }
 
     @Override
     public RecipeIngredient updateRecipeIngredient(Long id, Double quantity) {
+
         RecipeIngredient ri = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe ingredient not found"));
 
@@ -64,9 +68,9 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
         repo.deleteById(id);
     }
 
-    // ✅ EXACT MATCH with interface (primitive long)
     @Override
     public Double getTotalQuantityOfIngredient(long ingredientId) {
-        return repo.getTotalQuantityByIngredientId(ingredientId);
+        Double qty = repo.getTotalQuantityByIngredientId(ingredientId);
+        return qty == null ? 0.0 : qty;
     }
 }
