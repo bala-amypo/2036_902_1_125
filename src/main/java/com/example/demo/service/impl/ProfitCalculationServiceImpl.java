@@ -25,15 +25,15 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
     private final IngredientRepository ingredientRepository;
     private final ProfitCalculationRecordRepository recordRepository;
 
- public ProfitCalculationServiceImpl(
+public ProfitCalculationServiceImpl(
+        MenuItemRepository menuItemRepository,
         IngredientRepository ingredientRepository,
         RecipeIngredientRepository recipeIngredientRepository,
-        MenuItemRepository menuItemRepository,
         ProfitCalculationRecordRepository recordRepository
 ) {
+    this.menuItemRepository = menuItemRepository;
     this.ingredientRepository = ingredientRepository;
     this.recipeIngredientRepository = recipeIngredientRepository;
-    this.menuItemRepository = menuItemRepository;
     this.recordRepository = recordRepository;
 }
 
