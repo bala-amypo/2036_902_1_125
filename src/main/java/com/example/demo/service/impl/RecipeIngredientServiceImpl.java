@@ -15,18 +15,21 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
     private final MenuItemRepository menuItemRepo;
     private final IngredientRepository ingredientRepo;
 
-    public RecipeIngredientServiceImpl(RecipeIngredientRepository repo,
-                                       MenuItemRepository menuItemRepo,
-                                       IngredientRepository ingredientRepo) {
+    public RecipeIngredientServiceImpl(
+            RecipeIngredientRepository repo,
+            MenuItemRepository menuItemRepo,
+            IngredientRepository ingredientRepo) {
+
         this.repo = repo;
         this.menuItemRepo = menuItemRepo;
         this.ingredientRepo = ingredientRepo;
     }
 
     @Override
-    public RecipeIngredient addIngredientToRecipe(Long menuItemId,
-                                                   Long ingredientId,
-                                                   Double quantity) {
+    public RecipeIngredient addIngredientToRecipe(
+            Long menuItemId,
+            Long ingredientId,
+            Double quantity) {
 
         MenuItem menuItem = menuItemRepo.findById(menuItemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
@@ -61,9 +64,9 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
         repo.deleteById(id);
     }
 
-    // ✅ REQUIRED BY TEST
+    // ✅ EXACT MATCH with interface (primitive long)
     @Override
-    public Double getTotalQuantityOfIngredient(Long ingredientId) {
+    public Double getTotalQuantityOfIngredient(long ingredientId) {
         return repo.getTotalQuantityByIngredientId(ingredientId);
     }
 }
