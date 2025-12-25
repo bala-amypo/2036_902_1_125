@@ -73,9 +73,5 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
         Double qty = repo.getTotalQuantityByIngredientId(ingredientId);
         return qty == null ? 0.0 : qty;
     }
-    @Override
-public RecipeIngredient addIngredientToMenuItem(RecipeIngredient recipeIngredient) {
-    return repo.save(recipeIngredient);
-}
-
+   
 }

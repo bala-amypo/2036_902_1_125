@@ -10,8 +10,6 @@ public interface RecipeIngredientService {
     RecipeIngredient updateRecipeIngredient(Long id, Double quantity);
 
     List<RecipeIngredient> getIngredientsByMenuItem(Long menuItemId);
-    
-    RecipeIngredient addIngredientToMenuItem(RecipeIngredient recipeIngredient);
 
 
     void removeIngredientFromRecipe(Long id);
