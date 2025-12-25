@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
-
 public interface ProfitCalculationRecordRepository
         extends JpaRepository<ProfitCalculationRecord, Long> {
 
@@ -14,7 +13,8 @@ public interface ProfitCalculationRecordRepository
     List<ProfitCalculationRecord>
         findByProfitMarginBetween(BigDecimal min, BigDecimal max);
 
-    // ✅ REQUIRED BY TEST
+    // ✅ REQUIRED BY TESTS
     List<ProfitCalculationRecord>
-        findByProfitMarginGreaterThanEqual(BigDecimal margin);
+        findByProfitMarginGreaterThanEqual(BigDecimal value);
 }
+

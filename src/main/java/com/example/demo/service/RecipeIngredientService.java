@@ -5,11 +5,7 @@ import java.util.List;
 
 public interface RecipeIngredientService {
 
-    RecipeIngredient addIngredientToRecipe(
-            Long menuItemId,
-            Long ingredientId,
-            Double quantity
-    );
+    RecipeIngredient addIngredientToMenuItem(RecipeIngredient recipeIngredient);
 
     RecipeIngredient updateRecipeIngredient(Long id, Double quantity);
 
@@ -17,6 +13,6 @@ public interface RecipeIngredientService {
 
     void removeIngredientFromRecipe(Long id);
 
-    // ✅ MUST BE primitive long (tests expect this)
     Double getTotalQuantityOfIngredient(long ingredientId);
 }
+
