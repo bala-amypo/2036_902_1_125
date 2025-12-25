@@ -6,7 +6,17 @@ import java.util.List;
 
 public interface RecipeIngredientService {
 
-    RecipeIngredient addIngredientToMenuItem(RecipeIngredient recipeIngredient);
+    // 🔹 Used by controller
+    RecipeIngredient addIngredientToRecipe(
+            Long menuItemId,
+            Long ingredientId,
+            Double quantity
+    );
+
+    // 🔹 Used by tests
+    RecipeIngredient addIngredientToMenuItem(
+            RecipeIngredient recipeIngredient
+    );
 
     RecipeIngredient updateRecipeIngredient(long id, double quantity);
 
