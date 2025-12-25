@@ -19,4 +19,7 @@ public interface ProfitCalculationRecordRepository
     List<ProfitCalculationRecord> findByProfitMarginGreaterThanEqual(
             BigDecimal min
     );
+    List<ProfitCalculationRecord>
+findByProfitMarginGreaterThanEqual(double min);
+
 }
