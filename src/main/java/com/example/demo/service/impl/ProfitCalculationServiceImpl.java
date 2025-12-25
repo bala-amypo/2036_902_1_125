@@ -20,20 +20,20 @@ import java.util.List;
 public class ProfitCalculationServiceImpl implements ProfitCalculationService {
 
     private final IngredientRepository ingredientRepository;
-    private final RecipeIngredientRepository recipeIngredientRepository;
     private final MenuItemRepository menuItemRepository;
+    private final RecipeIngredientRepository recipeIngredientRepository;
     private final ProfitCalculationRecordRepository recordRepository;
 
-    // ✅ DO NOT CHANGE ORDER – TEST DEPENDS ON THIS
+    // 🔴 THIS ORDER IS CRITICAL – MATCHES TEST EXACTLY
     public ProfitCalculationServiceImpl(
             IngredientRepository ingredientRepository,
-            RecipeIngredientRepository recipeIngredientRepository,
             MenuItemRepository menuItemRepository,
+            RecipeIngredientRepository recipeIngredientRepository,
             ProfitCalculationRecordRepository recordRepository
     ) {
         this.ingredientRepository = ingredientRepository;
-        this.recipeIngredientRepository = recipeIngredientRepository;
         this.menuItemRepository = menuItemRepository;
+        this.recipeIngredientRepository = recipeIngredientRepository;
         this.recordRepository = recordRepository;
     }
 
