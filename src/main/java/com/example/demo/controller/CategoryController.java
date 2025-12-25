@@ -16,34 +16,29 @@ public class CategoryController {
         this.service = service;
     }
 
-    // ✅ CREATE (returns 200 OK by default)
     @PostMapping
-    public Category create(@RequestBody Category category) {
-        return service.create(category);
+    public Category createCategory(@RequestBody Category category) {
+        return service.createCategory(category);
     }
 
-    // ✅ GET ALL
     @GetMapping
-    public List<Category> getAll() {
-        return service.getAll();
+    public List<Category> getAllCategories() {
+        return service.getAllCategories();
     }
 
-    // ✅ GET BY ID
     @GetMapping("/{id}")
-    public Category getById(@PathVariable Long id) {
-        return service.getById(id);
+    public Category getCategoryById(@PathVariable long id) {
+        return service.getCategoryById(id);
     }
 
-    // ✅ UPDATE (partial-safe)
     @PutMapping("/{id}")
-    public Category update(@PathVariable Long id,
-                           @RequestBody Category category) {
-        return service.update(id, category);
+    public Category updateCategory(@PathVariable long id,
+                                   @RequestBody Category category) {
+        return service.updateCategory(id, category);
     }
 
-    // ✅ DEACTIVATE
     @PutMapping("/{id}/deactivate")
-    public void deactivate(@PathVariable Long id) {
-        service.deactivate(id);
+    public void deactivateCategory(@PathVariable long id) {
+        service.deactivateCategory(id);
     }
 }

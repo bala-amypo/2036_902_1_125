@@ -4,7 +4,6 @@ import com.example.demo.entity.Category;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.service.CategoryService;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,53 +11,48 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryRepository repo;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public CategoryServiceImpl(CategoryRepository repo) {
+        this.repo = repo;
     }
 
     @Override
-    public Category create(Category category) {
-        return categoryRepository.save(category);
+    public Category createCategory(Category category) {
+        return repo.save(category);
     }
 
     @Override
-    public Category update(Long id, Category updated) {
+    public Category updateCategory(long id, Category updated) {
+        Category existing = getCategoryById(id);
 
-        Category existing = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-
-        if (updated.getName() != null && !updated.getName().isBlank()) {
+        if (updated.getName() != null)
             existing.setName(updated.getName());
-        }
 
-        if (updated.getDescription() != null) {
+        if (updated.getDescription() != null)
             existing.setDescription(updated.getDescription());
-        }
 
-        if (updated.getActive() != null) {
+        if (updated.getActive() != null)
             existing.setActive(updated.getActive());
-        }
 
-        return categoryRepository.save(existing);
+        return repo.save(existing);
     }
 
     @Override
-    public Category getById(Long id) {
-        return categoryRepository.findById(id)
+    public Category getCategoryById(long id) {
+        return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
     }
 
     @Override
-    public List<Category> getAll() {
-        return categoryRepository.findAll();
+    public List<Category> getAllCategories() {
+        return repo.findAll();
     }
 
     @Override
-    public void deactivate(Long id) {
-        Category category = getById(id);
+    public void deactivateCategory(long id) {
+        Category category = getCategoryById(id);
         category.setActive(false);
-        categoryRepository.save(category);
+        repo.save(category);
     }
 }
