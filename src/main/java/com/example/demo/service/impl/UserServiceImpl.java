@@ -10,13 +10,14 @@ import com.example.demo.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service   // ✅ THIS IS THE FIX
+import java.time.LocalDateTime;
+
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Constructor order MUST remain same (tests rely on this)
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -28,17 +29,23 @@ public class UserServiceImpl implements UserService {
 
         userRepository.findByEmailIgnoreCase(request.getEmail())
                 .ifPresent(u -> {
-                    throw new BadRequestException("Email already in use");
+                    throw new BadRequestException("Email already exists");
                 });
+
+        String role = request.getRole();
+
+        // ✅ FIX: Always store ROLE_ prefixed value
+        if (role != null && !role.startsWith("ROLE_")) {
+            role = "ROLE_" + role;
+        }
 
         User user = new User();
         user.setFullName(request.getFullName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        if (request.getRole() != null) {
-            user.setRole(request.getRole());
-        }
+        user.setRole(role);
+        user.setActive(true);
+        user.setCreatedAt(LocalDateTime.now());
 
         return userRepository.save(user);
     }
