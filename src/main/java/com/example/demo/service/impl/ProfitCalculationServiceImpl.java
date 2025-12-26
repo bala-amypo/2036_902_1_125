@@ -18,7 +18,7 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
     private final IngredientRepository ingredientRepository;
     private final ProfitCalculationRecordRepository profitCalculationRecordRepository;
 
-    // ✅ EXACT ORDER REQUIRED BY TESTS
+    // 🔥 THIS ORDER MUST MATCH THE TEST — DO NOT CHANGE
     public ProfitCalculationServiceImpl(
             MenuItemRepository menuItemRepository,
             RecipeIngredientRepository recipeIngredientRepository,
