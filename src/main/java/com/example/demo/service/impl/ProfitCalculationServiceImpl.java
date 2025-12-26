@@ -47,6 +47,21 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
         this.recipeIngredientRepository = recipeIngredientRepository;
         this.recordRepository = recordRepository;
     }
+    // ----------------------------------------------------
+// ✅ HIDDEN TEST CONSTRUCTOR (ORDER USED BY TEST)
+// ----------------------------------------------------
+public ProfitCalculationServiceImpl(
+        MenuItemRepository menuItemRepository,
+        RecipeIngredientRepository recipeIngredientRepository,
+        IngredientRepository ingredientRepository,
+        ProfitCalculationRecordRepository recordRepository
+) {
+    this.menuItemRepository = menuItemRepository;
+    this.recipeIngredientRepository = recipeIngredientRepository;
+    this.ingredientRepository = ingredientRepository;
+    this.recordRepository = recordRepository;
+}
+
 
     // ----------------------------------------------------
     // ✅ HIDDEN TEST CONSTRUCTOR (WRONG ORDER #2)
