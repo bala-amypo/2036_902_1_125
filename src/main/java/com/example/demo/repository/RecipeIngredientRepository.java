@@ -9,10 +9,13 @@ import java.util.List;
 
 public interface RecipeIngredientRepository extends JpaRepository<RecipeIngredient, Long> {
 
-    // Used by profit calculation
+    // Used in ProfitCalculationService
     List<RecipeIngredient> findByMenuItemId(Long menuItemId);
 
-    // ✅ REQUIRED for GET /ingredient/{id}/total-quantity
+    // Used in MenuItemService (deactivate protection)
+    boolean existsByMenuItemId(Long menuItemId);
+
+    // Used in RecipeIngredientService (total quantity)
     @Query("""
         SELECT COALESCE(SUM(ri.quantityRequired), 0)
         FROM RecipeIngredient ri
