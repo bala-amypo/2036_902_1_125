@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.RecipeIngredient;
-
 import java.util.List;
 
 public interface RecipeIngredientService {
@@ -16,4 +15,9 @@ public interface RecipeIngredientService {
 
     // REQUIRED BY TESTS
     double getTotalQuantityOfIngredient(long ingredientId);
+
+    // 🔒 COMPATIBILITY FOR CONTROLLER
+    default double getTotalQuantityUsed(Long ingredientId) {
+        return getTotalQuantityOfIngredient(ingredientId);
+    }
 }

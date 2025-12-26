@@ -16,17 +16,15 @@ public class RecipeIngredientController {
         this.service = service;
     }
 
-    // ✅ POST
     @PostMapping
-    public RecipeIngredient add(
-            @RequestParam Long menuItemId,
-            @RequestParam Long ingredientId,
-            @RequestParam double quantity
-    ) {
-        return service.addIngredientToMenuItem(menuItemId, ingredientId, quantity);
+    public RecipeIngredient add(@RequestBody RecipeIngredient ri) {
+        return service.addIngredientToMenuItem(
+                ri.getMenuItem().getId(),
+                ri.getIngredient().getId(),
+                ri.getQuantityRequired()
+        );
     }
 
-    // ✅ PUT
     @PutMapping("/{id}")
     public RecipeIngredient update(
             @PathVariable Long id,
@@ -35,21 +33,18 @@ public class RecipeIngredientController {
         return service.updateRecipeIngredient(id, quantity);
     }
 
-    // ✅ DELETE
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.removeIngredientFromRecipe(id);
-    }
-
-    // ✅ GET by menu item
     @GetMapping("/menu-item/{menuItemId}")
     public List<RecipeIngredient> getByMenuItem(@PathVariable Long menuItemId) {
         return service.getIngredientsByMenuItem(menuItemId);
     }
 
-    // ✅ GET total quantity
     @GetMapping("/ingredient/{ingredientId}/total-quantity")
     public double getTotalQuantity(@PathVariable Long ingredientId) {
-        return service.getTotalQuantityUsed(ingredientId);
+        return service.getTotalQuantityOfIngredient(ingredientId);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.removeIngredientFromRecipe(id);
     }
 }
