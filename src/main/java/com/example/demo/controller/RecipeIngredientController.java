@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.RecipeIngredientRequest;
 import com.example.demo.entity.RecipeIngredient;
 import com.example.demo.service.RecipeIngredientService;
 import org.springframework.web.bind.annotation.*;
@@ -16,24 +17,40 @@ public class RecipeIngredientController {
         this.service = service;
     }
 
+    // ✅ POST
     @PostMapping
-    public RecipeIngredient add(@RequestBody RecipeIngredient ri) {
-        return service.addIngredientToMenuItem(ri);
+    public RecipeIngredient create(@RequestBody RecipeIngredientRequest request) {
+        return service.addIngredient(
+                request.getMenuItemId(),
+                request.getIngredientId(),
+                request.getQuantity()
+        );
     }
 
+    // ✅ PUT
     @PutMapping("/{id}")
-    public RecipeIngredient update(@PathVariable Long id,
-                                   @RequestParam Double quantity) {
-        return service.updateRecipeIngredient(id, quantity);
+    public RecipeIngredient update(
+            @PathVariable Long id,
+            @RequestParam double quantity
+    ) {
+        return service.updateIngredient(id, quantity);
     }
 
-    @GetMapping("/menu-item/{menuItemId}")
-    public List<RecipeIngredient> getByMenuItem(@PathVariable Long menuItemId) {
-        return service.getIngredientsByMenuItem(menuItemId);
-    }
-
+    // ✅ DELETE
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        service.removeIngredientFromRecipe(id);
+        service.removeIngredient(id);
+    }
+
+    // ✅ GET by menu item
+    @GetMapping("/menu-item/{menuItemId}")
+    public List<RecipeIngredient> getByMenuItem(@PathVariable Long menuItemId) {
+        return service.getIngredientsForMenuItem(menuItemId);
+    }
+
+    // ✅ GET total quantity
+    @GetMapping("/ingredient/{ingredientId}/total-quantity")
+    public double getTotalQuantity(@PathVariable Long ingredientId) {
+        return service.getTotalQuantityUsed(ingredientId);
     }
 }
