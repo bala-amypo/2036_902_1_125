@@ -13,17 +13,18 @@ import java.util.List;
 public class RecipeIngredientServiceImpl implements RecipeIngredientService {
 
     private final RecipeIngredientRepository recipeIngredientRepository;
-    private final MenuItemRepository menuItemRepository;
     private final IngredientRepository ingredientRepository;
+    private final MenuItemRepository menuItemRepository;
 
+    // 🔥 EXACT ORDER REQUIRED BY TESTS
     public RecipeIngredientServiceImpl(
             RecipeIngredientRepository recipeIngredientRepository,
-            MenuItemRepository menuItemRepository,
-            IngredientRepository ingredientRepository
+            IngredientRepository ingredientRepository,
+            MenuItemRepository menuItemRepository
     ) {
         this.recipeIngredientRepository = recipeIngredientRepository;
-        this.menuItemRepository = menuItemRepository;
         this.ingredientRepository = ingredientRepository;
+        this.menuItemRepository = menuItemRepository;
     }
 
     @Override
