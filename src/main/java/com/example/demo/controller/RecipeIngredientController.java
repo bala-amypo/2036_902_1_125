@@ -16,24 +16,37 @@ public class RecipeIngredientController {
         this.service = service;
     }
 
+    // POST /api/recipe-ingredients
     @PostMapping
-    public RecipeIngredient add(@RequestBody RecipeIngredient ri) {
-        return service.addIngredientToMenuItem(ri);
+    public RecipeIngredient add(@RequestBody RecipeIngredient recipeIngredient) {
+        return service.addIngredient(recipeIngredient);
     }
 
+    // PUT /api/recipe-ingredients/{id}
     @PutMapping("/{id}")
-    public RecipeIngredient update(@PathVariable Long id,
-                                   @RequestParam Double quantity) {
-        return service.updateRecipeIngredient(id, quantity);
+    public RecipeIngredient update(
+            @PathVariable Long id,
+            @RequestBody RecipeIngredient recipeIngredient
+    ) {
+        return service.updateIngredient(id, recipeIngredient);
     }
 
-    @GetMapping("/menu-item/{menuItemId}")
-    public List<RecipeIngredient> getByMenuItem(@PathVariable Long menuItemId) {
-        return service.getIngredientsByMenuItem(menuItemId);
-    }
-
+    // DELETE /api/recipe-ingredients/{id}
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        service.removeIngredientFromRecipe(id);
+        service.removeIngredient(id);
+    }
+
+    // GET /api/recipe-ingredients/menu-item/{menuItemId}
+    @GetMapping("/menu-item/{menuItemId}")
+    public List<RecipeIngredient> byMenuItem(@PathVariable Long menuItemId) {
+        return service.getIngredientsForMenuItem(menuItemId);
+    }
+
+    // ✅ REQUIRED BY TESTS
+    // GET /api/recipe-ingredients/ingredient/{ingredientId}/total-quantity
+    @GetMapping("/ingredient/{ingredientId}/total-quantity")
+    public double totalQuantity(@PathVariable Long ingredientId) {
+        return service.getTotalQuantityUsed(ingredientId);
     }
 }
