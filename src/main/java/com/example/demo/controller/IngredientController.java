@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Ingredient;
 import com.example.demo.service.IngredientService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +19,9 @@ public class IngredientController {
     }
 
     @PostMapping
-    public ResponseEntity<Ingredient> createIngredient(
-            @RequestBody Ingredient ingredient) {
-        return ResponseEntity.ok(service.createIngredient(ingredient));
+    public ResponseEntity<Ingredient> createIngredient(@RequestBody Ingredient ingredient) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.createIngredient(ingredient));
     }
 
     @GetMapping
@@ -29,15 +30,13 @@ public class IngredientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ingredient> getIngredientById(
-            @PathVariable long id) {
+    public ResponseEntity<Ingredient> getIngredientById(@PathVariable long id) {
         return ResponseEntity.ok(service.getIngredientById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Ingredient> updateIngredient(
-            @PathVariable long id,
-            @RequestBody Ingredient ingredient) {
+    public ResponseEntity<Ingredient> updateIngredient(@PathVariable long id,
+                                                       @RequestBody Ingredient ingredient) {
         return ResponseEntity.ok(service.updateIngredient(id, ingredient));
     }
 

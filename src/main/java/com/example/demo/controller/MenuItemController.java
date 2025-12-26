@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.MenuItem;
 import com.example.demo.service.MenuItemService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +19,9 @@ public class MenuItemController {
     }
 
     @PostMapping
-    public ResponseEntity<MenuItem> createMenuItem(
-            @RequestBody MenuItem item) {
-        return ResponseEntity.ok(service.createMenuItem(item));
+    public ResponseEntity<MenuItem> createMenuItem(@RequestBody MenuItem item) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.createMenuItem(item));
     }
 
     @GetMapping
@@ -29,15 +30,13 @@ public class MenuItemController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MenuItem> getMenuItemById(
-            @PathVariable long id) {
+    public ResponseEntity<MenuItem> getMenuItemById(@PathVariable long id) {
         return ResponseEntity.ok(service.getMenuItemById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MenuItem> updateMenuItem(
-            @PathVariable long id,
-            @RequestBody MenuItem item) {
+    public ResponseEntity<MenuItem> updateMenuItem(@PathVariable long id,
+                                                   @RequestBody MenuItem item) {
         return ResponseEntity.ok(service.updateMenuItem(id, item));
     }
 

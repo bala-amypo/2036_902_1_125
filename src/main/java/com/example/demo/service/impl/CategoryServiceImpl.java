@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Category;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.service.CategoryService;
@@ -19,6 +20,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategory(Category category) {
+        repo.findByNameIgnoreCase(category.getName())
+                .ifPresent(c -> {
+                    throw new BadRequestException("Category already exists");
+                });
         return repo.save(category);
     }
 

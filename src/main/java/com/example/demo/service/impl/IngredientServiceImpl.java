@@ -20,6 +20,11 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Ingredient createIngredient(Ingredient ingredient) {
+        repo.findByNameIgnoreCase(ingredient.getName())
+                .ifPresent(i -> {
+                    throw new BadRequestException("Ingredient already exists");
+                });
+
         if (ingredient.getName() == null || ingredient.getCostPerUnit() == null) {
             throw new BadRequestException("Invalid ingredient");
         }
