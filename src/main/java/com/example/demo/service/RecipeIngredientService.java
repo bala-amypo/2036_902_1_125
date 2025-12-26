@@ -5,14 +5,18 @@ import java.util.List;
 
 public interface RecipeIngredientService {
 
-    RecipeIngredient addIngredientToMenuItem(RecipeIngredient recipeIngredient);
+    // POST
+    RecipeIngredient addIngredient(RecipeIngredient recipeIngredient);
 
-    RecipeIngredient updateRecipeIngredient(Long id, Double quantity);
+    // PUT
+    RecipeIngredient updateIngredient(Long id, RecipeIngredient recipeIngredient);
 
-    List<RecipeIngredient> getIngredientsByMenuItem(Long menuItemId);
+    // DELETE
+    void removeIngredient(Long id);
 
+    // GET by menu item
+    List<RecipeIngredient> getIngredientsForMenuItem(Long menuItemId);
 
-    void removeIngredientFromRecipe(Long id);
-
-    Double getTotalQuantityOfIngredient(long ingredientId);
+    // ✅ REQUIRED BY TESTS
+    double getTotalQuantityUsed(Long ingredientId);
 }
