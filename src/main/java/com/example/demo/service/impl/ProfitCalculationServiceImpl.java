@@ -31,11 +31,9 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
         this.profitCalculationRecordRepository = profitCalculationRecordRepository;
     }
 
-    // rest of your methods stay SAME
-}
-
     @Override
     public ProfitCalculationRecord calculateProfit(Long menuItemId) {
+
         MenuItem menuItem = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
 
@@ -58,13 +56,12 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
             totalCost = totalCost.add(cost);
         }
 
-        BigDecimal profit =
-                menuItem.getSellingPrice().subtract(totalCost);
+        BigDecimal profit = menuItem.getSellingPrice().subtract(totalCost);
 
         ProfitCalculationRecord record = new ProfitCalculationRecord();
         record.setMenuItem(menuItem);
-        record.setTotalCost(totalCost);          // ✅ BigDecimal
-        record.setProfitMargin(profit);           // ✅ BigDecimal
+        record.setTotalCost(totalCost);
+        record.setProfitMargin(profit);
 
         return profitCalculationRecordRepository.save(record);
     }
@@ -107,4 +104,3 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
                 .toList();
     }
 }
-
