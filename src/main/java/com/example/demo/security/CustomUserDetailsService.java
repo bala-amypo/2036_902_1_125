@@ -5,6 +5,8 @@ import com.example.demo.repository.UserRepository;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -19,10 +21,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = repository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        // 🔥 FIX: DO NOT use roles("ROLE_USER")
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .roles(user.getRole())
+                .authorities(List.of(() -> user.getRole()))
                 .build();
     }
 }

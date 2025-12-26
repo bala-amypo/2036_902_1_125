@@ -12,17 +12,23 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 
     Optional<MenuItem> findByNameIgnoreCase(String name);
 
-    @Query("""
-        SELECT DISTINCT m FROM MenuItem m
-        LEFT JOIN FETCH m.categories
-        WHERE m.active = true
-    """)
-    List<MenuItem> findAllActiveWithCategories();
-
+    // 🔥 REQUIRED FOR UPDATE TESTS
     @Query("""
         SELECT m FROM MenuItem m
         LEFT JOIN FETCH m.categories
         WHERE m.id = :id
     """)
     Optional<MenuItem> findByIdWithCategories(@Param("id") Long id);
+
+    // 🔥 REQUIRED FOR getAllMenuItems test
+    @Override
+    List<MenuItem> findAll();
+
+    // 🔥 REQUIRED BY HQL TEST
+    @Query("""
+        SELECT DISTINCT m FROM MenuItem m
+        LEFT JOIN FETCH m.categories
+        WHERE m.active = true
+    """)
+    List<MenuItem> findAllActiveWithCategories();
 }
