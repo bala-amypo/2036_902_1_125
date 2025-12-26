@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.*;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.*;
 import com.example.demo.service.RecipeIngredientService;
@@ -27,6 +28,10 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
 
     @Override
     public RecipeIngredient addIngredientToMenuItem(Long menuItemId, Long ingredientId, double quantity) {
+
+        if (quantity <= 0) {
+            throw new BadRequestException("Invalid quantity");
+        }
 
         MenuItem menuItem = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
