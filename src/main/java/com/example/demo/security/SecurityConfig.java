@@ -5,15 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -26,36 +22,27 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService);
-    }
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        JwtAuthenticationFilter jwtFilter =
+                new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService);
 
         http
             .csrf(csrf -> csrf.disable())
-            .sessionManagement(sm ->
-                sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
+            .sessionManagement(session ->
+                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/auth/**",
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/swagger-ui.html",
-                        "/hello-servlet"
-                ).permitAll()
+                    // 🔓 Public endpoints
+                    .requestMatchers("/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                    .permitAll()
 
-                // ✅ CORRECT ROLE CHECK
-                .requestMatchers("/api/**").hasRole("USER")
+                    // 🔐 Secure ALL API endpoints
+                    .requestMatchers("/api/**").authenticated()
 
-                .anyRequest().authenticated()
+                    // ❌ Block everything else
+                    .anyRequest().denyAll()
             )
-            .addFilterBefore(
-                jwtAuthenticationFilter(),
-                UsernamePasswordAuthenticationFilter.class
-            );
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -64,10 +51,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
