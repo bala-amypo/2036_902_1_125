@@ -16,7 +16,6 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
     private final IngredientRepository ingredientRepository;
     private final MenuItemRepository menuItemRepository;
 
-    // 🔥 EXACT ORDER REQUIRED BY TESTS
     public RecipeIngredientServiceImpl(
             RecipeIngredientRepository recipeIngredientRepository,
             IngredientRepository ingredientRepository,

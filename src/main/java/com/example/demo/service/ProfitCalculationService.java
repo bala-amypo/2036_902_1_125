@@ -13,7 +13,6 @@ public interface ProfitCalculationService {
 
     List<ProfitCalculationRecord> getAllCalculations();
 
-    // ✅ REQUIRED BY TESTS
     List<ProfitCalculationRecord> findRecordsWithMarginBetween(double min, double max);
 
     List<ProfitCalculationRecord> findRecordsWithMarginGreaterThanEqual(double min);

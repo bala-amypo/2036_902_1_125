@@ -65,7 +65,6 @@ public class MenuItemServiceImpl implements MenuItemService {
         MenuItem existing = menuItemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
 
-        // 🔥 TEST EXPECTS BadRequestException FIRST
         if (Boolean.TRUE.equals(updated.getActive()) &&
                 !recipeIngredientRepository.existsByMenuItemId(id)) {
             throw new BadRequestException("Menu item must have recipe ingredients");
@@ -114,7 +113,6 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     public List<MenuItem> getAllMenuItems() {
-        // 🔥 TEST EXPECTS ALL ITEMS
         return menuItemRepository.findAll();
     }
 

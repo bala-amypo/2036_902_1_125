@@ -15,7 +15,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // ⚠️ Constructor order MUST remain same (tests rely on it)
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -38,9 +37,6 @@ public class UserServiceImpl implements UserService {
         if (request.getRole() != null) {
             user.setRole(request.getRole());
         }
-
-        // ❌ DO NOT set createdAt manually
-        // ✔ @PrePersist will handle it
 
         return userRepository.save(user);
     }
