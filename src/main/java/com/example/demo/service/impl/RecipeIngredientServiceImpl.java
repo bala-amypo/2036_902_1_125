@@ -1,12 +1,8 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.Ingredient;
-import com.example.demo.entity.MenuItem;
-import com.example.demo.entity.RecipeIngredient;
+import com.example.demo.entity.*;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.IngredientRepository;
-import com.example.demo.repository.MenuItemRepository;
-import com.example.demo.repository.RecipeIngredientRepository;
+import com.example.demo.repository.*;
 import com.example.demo.service.RecipeIngredientService;
 import org.springframework.stereotype.Service;
 
@@ -15,63 +11,64 @@ import java.util.List;
 @Service
 public class RecipeIngredientServiceImpl implements RecipeIngredientService {
 
-    private final RecipeIngredientRepository repo;
-    private final MenuItemRepository menuItemRepo;
-    private final IngredientRepository ingredientRepo;
+    private final RecipeIngredientRepository recipeIngredientRepository;
+    private final MenuItemRepository menuItemRepository;
+    private final IngredientRepository ingredientRepository;
 
     public RecipeIngredientServiceImpl(
-            RecipeIngredientRepository repo,
-            MenuItemRepository menuItemRepo,
-            IngredientRepository ingredientRepo) {
-
-        this.repo = repo;
-        this.menuItemRepo = menuItemRepo;
-        this.ingredientRepo = ingredientRepo;
+            RecipeIngredientRepository recipeIngredientRepository,
+            MenuItemRepository menuItemRepository,
+            IngredientRepository ingredientRepository
+    ) {
+        this.recipeIngredientRepository = recipeIngredientRepository;
+        this.menuItemRepository = menuItemRepository;
+        this.ingredientRepository = ingredientRepository;
     }
 
-    // ✅ REQUIRED BY TESTS
     @Override
-    public RecipeIngredient addIngredientToMenuItem(RecipeIngredient ri) {
-
-        Long menuItemId = ri.getMenuItem().getId();
-        Long ingredientId = ri.getIngredient().getId();
-
-        MenuItem menuItem = menuItemRepo.findById(menuItemId)
+    public RecipeIngredient addIngredientToMenuItem(
+            Long menuItemId,
+            Long ingredientId,
+            double quantity
+    ) {
+        MenuItem menuItem = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
 
-        Ingredient ingredient = ingredientRepo.findById(ingredientId)
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
 
+        RecipeIngredient ri = new RecipeIngredient();
         ri.setMenuItem(menuItem);
         ri.setIngredient(ingredient);
+        ri.setQuantityRequired(quantity);
 
-        return repo.save(ri);
+        return recipeIngredientRepository.save(ri);
     }
 
     @Override
-    public RecipeIngredient updateRecipeIngredient(Long id, Double quantity) {
-
-        RecipeIngredient ri = repo.findById(id)
+    public RecipeIngredient updateRecipeIngredient(Long id, double quantity) {
+        RecipeIngredient ri = recipeIngredientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe ingredient not found"));
 
         ri.setQuantityRequired(quantity);
-        return repo.save(ri);
-    }
-
-    @Override
-    public List<RecipeIngredient> getIngredientsByMenuItem(Long menuItemId) {
-        return repo.findByMenuItemId(menuItemId);
+        return recipeIngredientRepository.save(ri);
     }
 
     @Override
     public void removeIngredientFromRecipe(Long id) {
-        repo.deleteById(id);
+        if (!recipeIngredientRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Recipe ingredient not found");
+        }
+        recipeIngredientRepository.deleteById(id);
     }
 
     @Override
-    public Double getTotalQuantityOfIngredient(long ingredientId) {
-        Double qty = repo.getTotalQuantityByIngredientId(ingredientId);
-        return qty == null ? 0.0 : qty;
+    public List<RecipeIngredient> getIngredientsByMenuItem(Long menuItemId) {
+        return recipeIngredientRepository.findByMenuItemId(menuItemId);
     }
-   
+
+    @Override
+    public double getTotalQuantityUsed(Long ingredientId) {
+        return recipeIngredientRepository.sumQuantityByIngredientId(ingredientId);
+    }
 }

@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.RecipeIngredientRequest;
 import com.example.demo.entity.RecipeIngredient;
 import com.example.demo.service.RecipeIngredientService;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +18,12 @@ public class RecipeIngredientController {
 
     // ✅ POST
     @PostMapping
-    public RecipeIngredient create(@RequestBody RecipeIngredientRequest request) {
-        return service.addIngredient(
-                request.getMenuItemId(),
-                request.getIngredientId(),
-                request.getQuantity()
-        );
+    public RecipeIngredient add(
+            @RequestParam Long menuItemId,
+            @RequestParam Long ingredientId,
+            @RequestParam double quantity
+    ) {
+        return service.addIngredientToMenuItem(menuItemId, ingredientId, quantity);
     }
 
     // ✅ PUT
@@ -33,19 +32,19 @@ public class RecipeIngredientController {
             @PathVariable Long id,
             @RequestParam double quantity
     ) {
-        return service.updateIngredient(id, quantity);
+        return service.updateRecipeIngredient(id, quantity);
     }
 
     // ✅ DELETE
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        service.removeIngredient(id);
+        service.removeIngredientFromRecipe(id);
     }
 
     // ✅ GET by menu item
     @GetMapping("/menu-item/{menuItemId}")
     public List<RecipeIngredient> getByMenuItem(@PathVariable Long menuItemId) {
-        return service.getIngredientsForMenuItem(menuItemId);
+        return service.getIngredientsByMenuItem(menuItemId);
     }
 
     // ✅ GET total quantity
