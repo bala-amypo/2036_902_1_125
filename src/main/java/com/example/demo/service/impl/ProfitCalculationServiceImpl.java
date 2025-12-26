@@ -13,24 +13,26 @@ import java.util.List;
 @Service
 public class ProfitCalculationServiceImpl implements ProfitCalculationService {
 
-    private MenuItemRepository menuItemRepository;
-    private IngredientRepository ingredientRepository;
-    private RecipeIngredientRepository recipeIngredientRepository;
-    private ProfitCalculationRecordRepository profitCalculationRecordRepository;
+    private final MenuItemRepository menuItemRepository;
+    private final RecipeIngredientRepository recipeIngredientRepository;
+    private final IngredientRepository ingredientRepository;
+    private final ProfitCalculationRecordRepository profitCalculationRecordRepository;
 
-    // 🔥 Flexible constructor for tests
-    public ProfitCalculationServiceImpl(Object... repositories) {
-        for (Object repo : repositories) {
-            if (repo instanceof MenuItemRepository)
-                this.menuItemRepository = (MenuItemRepository) repo;
-            else if (repo instanceof IngredientRepository)
-                this.ingredientRepository = (IngredientRepository) repo;
-            else if (repo instanceof RecipeIngredientRepository)
-                this.recipeIngredientRepository = (RecipeIngredientRepository) repo;
-            else if (repo instanceof ProfitCalculationRecordRepository)
-                this.profitCalculationRecordRepository = (ProfitCalculationRecordRepository) repo;
-        }
+    // ✅ EXACT ORDER REQUIRED BY TESTS
+    public ProfitCalculationServiceImpl(
+            MenuItemRepository menuItemRepository,
+            RecipeIngredientRepository recipeIngredientRepository,
+            IngredientRepository ingredientRepository,
+            ProfitCalculationRecordRepository profitCalculationRecordRepository
+    ) {
+        this.menuItemRepository = menuItemRepository;
+        this.recipeIngredientRepository = recipeIngredientRepository;
+        this.ingredientRepository = ingredientRepository;
+        this.profitCalculationRecordRepository = profitCalculationRecordRepository;
     }
+
+    // rest of your methods stay SAME
+}
 
     @Override
     public ProfitCalculationRecord calculateProfit(Long menuItemId) {
@@ -105,3 +107,4 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
                 .toList();
     }
 }
+
