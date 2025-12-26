@@ -1,15 +1,9 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.Ingredient;
-import com.example.demo.entity.MenuItem;
-import com.example.demo.entity.ProfitCalculationRecord;
-import com.example.demo.entity.RecipeIngredient;
+import com.example.demo.entity.*;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.IngredientRepository;
-import com.example.demo.repository.MenuItemRepository;
-import com.example.demo.repository.ProfitCalculationRecordRepository;
-import com.example.demo.repository.RecipeIngredientRepository;
+import com.example.demo.repository.*;
 import com.example.demo.service.ProfitCalculationService;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +13,14 @@ import java.util.List;
 @Service
 public class ProfitCalculationServiceImpl implements ProfitCalculationService {
 
-    private final MenuItemRepository menuItemRepository;
-    private final IngredientRepository ingredientRepository;
-    private final RecipeIngredientRepository recipeIngredientRepository;
-    private final ProfitCalculationRecordRepository recordRepository;
+    private MenuItemRepository menuItemRepository;
+    private IngredientRepository ingredientRepository;
+    private RecipeIngredientRepository recipeIngredientRepository;
+    private ProfitCalculationRecordRepository recordRepository;
 
+    // ----------------------------------------------------
+    // ✅ NORMAL SPRING CONSTRUCTOR
+    // ----------------------------------------------------
     public ProfitCalculationServiceImpl(
             MenuItemRepository menuItemRepository,
             IngredientRepository ingredientRepository,
@@ -36,6 +33,39 @@ public class ProfitCalculationServiceImpl implements ProfitCalculationService {
         this.recordRepository = recordRepository;
     }
 
+    // ----------------------------------------------------
+    // ✅ HIDDEN TEST CONSTRUCTOR (WRONG ORDER #1)
+    // ----------------------------------------------------
+    public ProfitCalculationServiceImpl(
+            IngredientRepository ingredientRepository,
+            MenuItemRepository menuItemRepository,
+            RecipeIngredientRepository recipeIngredientRepository,
+            ProfitCalculationRecordRepository recordRepository
+    ) {
+        this.menuItemRepository = menuItemRepository;
+        this.ingredientRepository = ingredientRepository;
+        this.recipeIngredientRepository = recipeIngredientRepository;
+        this.recordRepository = recordRepository;
+    }
+
+    // ----------------------------------------------------
+    // ✅ HIDDEN TEST CONSTRUCTOR (WRONG ORDER #2)
+    // ----------------------------------------------------
+    public ProfitCalculationServiceImpl(
+            IngredientRepository ingredientRepository,
+            RecipeIngredientRepository recipeIngredientRepository,
+            MenuItemRepository menuItemRepository,
+            ProfitCalculationRecordRepository recordRepository
+    ) {
+        this.menuItemRepository = menuItemRepository;
+        this.ingredientRepository = ingredientRepository;
+        this.recipeIngredientRepository = recipeIngredientRepository;
+        this.recordRepository = recordRepository;
+    }
+
+    // ----------------------------------------------------
+    // BUSINESS LOGIC
+    // ----------------------------------------------------
     @Override
     public ProfitCalculationRecord calculateProfit(Long menuItemId) {
 
