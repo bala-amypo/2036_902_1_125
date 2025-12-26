@@ -26,11 +26,8 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
     }
 
     @Override
-    public RecipeIngredient addIngredientToMenuItem(
-            Long menuItemId,
-            Long ingredientId,
-            double quantity
-    ) {
+    public RecipeIngredient addIngredientToMenuItem(Long menuItemId, Long ingredientId, double quantity) {
+
         MenuItem menuItem = menuItemRepository.findById(menuItemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
 
@@ -49,16 +46,12 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
     public RecipeIngredient updateRecipeIngredient(Long id, double quantity) {
         RecipeIngredient ri = recipeIngredientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe ingredient not found"));
-
         ri.setQuantityRequired(quantity);
         return recipeIngredientRepository.save(ri);
     }
 
     @Override
     public void removeIngredientFromRecipe(Long id) {
-        if (!recipeIngredientRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Recipe ingredient not found");
-        }
         recipeIngredientRepository.deleteById(id);
     }
 
@@ -68,7 +61,7 @@ public class RecipeIngredientServiceImpl implements RecipeIngredientService {
     }
 
     @Override
-    public double getTotalQuantityUsed(Long ingredientId) {
-        return recipeIngredientRepository.sumQuantityByIngredientId(ingredientId);
+    public double getTotalQuantityOfIngredient(long ingredientId) {
+        return recipeIngredientRepository.getTotalQuantityByIngredientId(ingredientId);
     }
 }
