@@ -4,10 +4,7 @@ import com.example.demo.dto.*;
 import com.example.demo.entity.User;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
-
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "auth-controller")
-@SecurityRequirement(name = "")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -32,33 +27,33 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // ✅ CHANGED TO 200 OK
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(userService.register(request));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(userService.register(request));
     }
-@PostMapping("/login")
-public ResponseEntity<AuthResponse> login(
-        @RequestBody AuthRequest request) {
 
-    Authentication authentication =
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
-                            request.getPassword()
-                    )
-            );
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
 
-    User user = userService.login(request);
-    String token = jwtTokenProvider.generateToken(authentication, user);
+        Authentication authentication =
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                request.getEmail(),
+                                request.getPassword()
+                        )
+                );
 
-    return ResponseEntity.ok(
-            new AuthResponse(
-                    token,
-                    user.getId(),
-                    user.getEmail(),
-                    user.getRole()
-            )
-    );
-}
+        User user = userService.login(request);
+        String token = jwtTokenProvider.generateToken(authentication, user);
+
+        return ResponseEntity.ok(
+                new AuthResponse(
+                        token,
+                        user.getId(),
+                        user.getEmail(),
+                        user.getRole()
+                )
+        );
+    }
 }
