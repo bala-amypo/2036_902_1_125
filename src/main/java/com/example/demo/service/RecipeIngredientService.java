@@ -1,15 +1,12 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.RecipeIngredient;
+
 import java.util.List;
 
 public interface RecipeIngredientService {
 
-    RecipeIngredient addIngredientToMenuItem(
-            Long menuItemId,
-            Long ingredientId,
-            double quantity
-    );
+    RecipeIngredient addIngredientToMenuItem(Long menuItemId, Long ingredientId, double quantity);
 
     RecipeIngredient updateRecipeIngredient(Long id, double quantity);
 
@@ -17,5 +14,6 @@ public interface RecipeIngredientService {
 
     List<RecipeIngredient> getIngredientsByMenuItem(Long menuItemId);
 
-    double getTotalQuantityUsed(Long ingredientId);
+    // REQUIRED BY TESTS
+    double getTotalQuantityOfIngredient(long ingredientId);
 }
