@@ -25,8 +25,6 @@ public class Category {
     @JsonIgnore
     private Set<MenuItem> menuItems = new HashSet<>();
 
-    // ===== GETTERS & SETTERS =====
-
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getDescription() { return description; }

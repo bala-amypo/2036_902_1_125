@@ -9,8 +9,6 @@ public class RegisterRequest {
 
     public RegisterRequest() {}
 
-    // ===== REQUIRED GETTERS =====
-
     public String getFullName() {
         return fullName;
     }
@@ -27,7 +25,6 @@ public class RegisterRequest {
         return role;
     }
 
-    // ===== REQUIRED SETTERS =====
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
