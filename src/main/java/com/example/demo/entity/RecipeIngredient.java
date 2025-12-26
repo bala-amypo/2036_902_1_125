@@ -28,7 +28,6 @@ public class RecipeIngredient {
     public void setIngredient(Ingredient ingredient) { this.ingredient = ingredient; }
     public void setQuantityRequired(Double quantityRequired) { this.quantityRequired = quantityRequired; }
 
-    // 🔥 REQUIRED BY TESTS
     public void setQuantity(double quantity) {
         this.quantityRequired = quantity;
     }

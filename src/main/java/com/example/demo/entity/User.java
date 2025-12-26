@@ -29,8 +29,6 @@ public class User {
 
     public User() {}
 
-    // ===== REQUIRED GETTERS =====
-
     public Long getId() {
         return id;
     }
@@ -58,8 +56,6 @@ public class User {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
-    // ===== REQUIRED SETTERS =====
 
     public void setId(Long id) {
         this.id = id;

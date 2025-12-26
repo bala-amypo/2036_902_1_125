@@ -23,7 +23,6 @@ public class SecurityConfig {
         this.customUserDetailsService = customUserDetailsService;
     }
 
-    // ✅ REQUIRED FOR UserServiceImpl
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -40,15 +39,12 @@ public class SecurityConfig {
             .sessionManagement(session ->
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                    // 🔓 Public endpoints
                     .requestMatchers(
                             "/auth/**",
                             "/v3/api-docs/**",
                             "/swagger-ui/**",
                             "/swagger-ui.html"
                     ).permitAll()
-
-                    // 🔐 Secured APIs
                     .requestMatchers("/api/**").authenticated()
 
                     .anyRequest().denyAll()

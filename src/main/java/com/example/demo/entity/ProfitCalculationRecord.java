@@ -14,7 +14,6 @@ public class ProfitCalculationRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 🔥 FIX: Prevent circular reference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "menu_item_id")
     @JsonIgnoreProperties({"categories", "createdAt", "updatedAt"})
@@ -32,8 +31,6 @@ public class ProfitCalculationRecord {
     void onCreate() {
         this.calculatedAt = LocalDateTime.now();
     }
-
-    // ===== GETTERS =====
 
     public Long getId() {
         return id;
@@ -54,9 +51,7 @@ public class ProfitCalculationRecord {
     public LocalDateTime getCalculatedAt() {
         return calculatedAt;
     }
-
-    // ===== SETTERS =====
-
+    
     public void setId(Long id) {
         this.id = id;
     }

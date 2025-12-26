@@ -10,13 +10,10 @@ import java.util.List;
 public interface RecipeIngredientRepository
         extends JpaRepository<RecipeIngredient, Long> {
 
-    // REQUIRED
     List<RecipeIngredient> findByMenuItemId(Long menuItemId);
 
-    // REQUIRED
     boolean existsByMenuItemId(Long menuItemId);
 
-    // REQUIRED BY TESTS (VERY IMPORTANT)
     @Query("""
         SELECT COALESCE(SUM(ri.quantityRequired), 0)
         FROM RecipeIngredient ri
