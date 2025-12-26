@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import org.springframework.http.HttpStatus;
+
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.RegisterRequest;
@@ -29,12 +31,11 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // ✅ FIX: Return 200 OK instead of 201 CREATED
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
-        User savedUser = userService.register(request);
-        return ResponseEntity.ok(savedUser); // 🔥 evaluator expects 200
-    }
+public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
+    return ResponseEntity.status(HttpStatus.CREATED)
+            .body(userService.register(request));
+}
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
